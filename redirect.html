@@ -7,42 +7,51 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #442565; color: #fff; font-family: Arial, sans-serif;
+      background: #442565; color: #fff; font-family: 'Segoe UI', Arial, sans-serif;
       display: flex; align-items: center; justify-content: center;
       min-height: 100vh; text-align: center; padding: 24px;
     }
     .card {
       background: #3a1f57; border: 1px solid rgba(255,106,0,0.35);
       padding: 40px 32px; max-width: 340px; width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
     .sigilo {
       width: 90px; height: 90px; object-fit: contain; margin: 0 auto 20px; display: block;
     }
-    h2 { font-size: 20px; color: #FF6A00; margin-bottom: 8px; }
-    p { color: #d4b8f0; font-size: 14px; margin-bottom: 16px; }
-    .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 16px 0; }
+    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 8px; }
+    p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; line-height: 1.4; }
+    .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 20px 0; }
     .btn-wrap {
-      display: flex; align-items: center; gap: 10px; margin-top: 8px;
+      display: flex; align-items: center; gap: 12px; margin-top: 10px;
     }
-    .wa-icon { width: 38px; height: 38px; flex-shrink: 0; }
+    .wa-icon { width: 42px; height: 42px; flex-shrink: 0; }
     .btn {
       display: flex; align-items: center; justify-content: center;
-      flex: 1; padding: 12px 10px;
+      flex: 1; padding: 14px 10px;
       background: #25D366; color: #fff; font-size: 14px;
       font-weight: bold; text-decoration: none;
+      border-radius: 4px;
       cursor: pointer; letter-spacing: 0.05em;
-      transition: background 0.2s;
+      transition: background 0.3s ease, transform 0.2s;
     }
-    .btn:hover { background: #1ebe5d; }
+    .btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
   </style>
 </head>
 <body>
+
   <div class="card">
     <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
+    
     <h2>¡Todo listo!</h2>
-    <p>Prepárate para tu lectura con <strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+    <p>Prepárate para tu lectura con <br><strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+    
     <div class="separador"></div>
-    <p>Tocá el botón para abrir WhatsApp.</p>
+    
+    <p>Tocá el botón para abrir WhatsApp y comenzar.</p>
+    
     <div class="btn-wrap">
       <svg class="wa-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
@@ -51,18 +60,33 @@
       <a id="waBtn" class="btn" href="#">Ir a WhatsApp</a>
     </div>
   </div>
+
   <script>
+    // Configuración
+    const phone = '59894140917';
     const params = new URLSearchParams(window.location.search);
     const msg = params.get('msg');
-    const phone = '59894140917';
+    const waBtn = document.getElementById('waBtn');
+
+    // Construcción de la URL
+    let finalUrl = `https://wa.me/${phone}`;
+    
     if (msg) {
-      const texto = decodeURIComponent(msg);
-      const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(texto);
-      document.getElementById('waBtn').href = url;
-      setTimeout(function() {
-        window.location.href = url;
-      }, 800);
+      // Si el mensaje viene codificado en la URL, lo decodificamos y volvemos a codificar para WA
+      const textoLimpio = decodeURIComponent(msg);
+      finalUrl += `?text=${encodeURIComponent(textoLimpio)}`;
+    }
+
+    // Asignar el enlace al botón inmediatamente
+    waBtn.href = finalUrl;
+
+    // Redirección automática solo si existe un mensaje (opcional)
+    if (msg) {
+      setTimeout(() => {
+        window.location.href = finalUrl;
+      }, 1000);
     }
   </script>
+
 </body>
 </html>
