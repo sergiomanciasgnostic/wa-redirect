@@ -31,7 +31,7 @@
       flex: 1; padding: 14px 10px;
       background: #25D366; color: #fff; font-size: 15px;
       font-weight: bold; text-decoration: none;
-      border-radius: 8px; cursor: pointer; letter-spacing: 0.05em;
+      border-radius: 8px; cursor: pointer;
     }
   </style>
 </head>
@@ -52,48 +52,45 @@
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
         <path fill="#fff" d="M34.5 13.5A14.9 14.9 0 0 0 24 9C15.7 9 9 15.7 9 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2A14.9 14.9 0 0 0 24 39c8.3 0 15-6.7 15-15 0-4-1.6-7.8-4.5-10.5zm-10.5 23a12.4 12.4 0 0 1-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5A12.4 12.4 0 0 1 11.6 24c0-6.8 5.6-12.4 12.4-12.4 3.3 0 6.4 1.3 8.8 3.6a12.3 12.3 0 0 1 3.6 8.8c0 6.9-5.5 12.5-12.4 12.5zm6.8-9.3c-.4-.2-2.2-1.1-2.6-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.5-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.7-.6-.6-.9-.7h-.7c-.3 0-.7.1-1 .4-.4.4-1.4 1.4-1.4 3.3s1.4 3.8 1.6 4.1c.2.3 2.8 4.2 6.7 5.9 4 1.7 4 1.1 4.7 1 .7-.1 2.2-.9 2.5-1.7.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/>
       </svg>
-      <a id="waBtn" class="btn" href="#">Ir a WhatsApp</a>
+      <a id="waBtn" class="btn" href="https://api.whatsapp.com/send?phone=59894140917">Ir a WhatsApp</a>
     </div>
   </div>
 
   <script>
     const phone = '59894140917';
-    const waBtn = document.getElementById('waBtn');
 
-    function enviarDatos() {
-        // 1. Recoger MSG de la URL
+    function procesarYEnviar() {
+      try {
         const params = new URLSearchParams(window.location.search);
-        let textoFinal = params.get('msg') ? decodeURIComponent(params.get('msg')).replace(/\\n/g, '\n') : "";
+        let textoUrl = params.get('msg') ? decodeURIComponent(params.get('msg')).replace(/\\n/g, '\n') : "";
 
-        // 2. Recoger TODO lo del LocalStorage y sumarlo
-        let datosLocal = "";
+        // Recolectar LocalStorage de forma segura
+        let datosExtra = "";
         for (let i = 0; i < localStorage.length; i++) {
-            let clave = localStorage.key(i);
-            let valor = localStorage.getItem(clave);
-            datosLocal += `\n${clave.toUpperCase()}: ${valor}`;
+          let key = localStorage.key(i);
+          datosExtra += `\n${key.toUpperCase()}: ${localStorage.getItem(key)}`;
         }
 
-        if (datosLocal !== "") {
-            textoFinal += "\n\n--- DATOS ADICIONALES ---" + datosLocal;
+        let mensajeFinal = textoUrl;
+        if (datosExtra) {
+          mensajeFinal += "\n\n--- DATOS ADICIONALES ---" + datosExtra;
         }
 
-        // 3. Crear URL y redirigir
-        const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(textoFinal);
+        const urlFinal = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(mensajeFinal);
         
-        waBtn.href = finalUrl;
-        window.location.href = finalUrl;
+        // Actualizar botón y redirigir
+        document.getElementById('waBtn').href = urlFinal;
+        window.location.href = urlFinal;
+
+      } catch (e) {
+        console.error("Error procesando datos:", e);
+        // Si algo falla, al menos intentamos abrir el WhatsApp básico
+        window.location.href = "https://api.whatsapp.com/send?phone=" + phone;
+      }
     }
 
-    // Intentar envío automático al cargar
-    window.onload = function() {
-        enviarDatos();
-    };
-
-    // Si el usuario hace clic (por si falla el auto)
-    waBtn.onclick = function(e) {
-        enviarDatos();
-        return false;
-    };
+    // Ejecutar al cargar la página
+    window.onload = procesarYEnviar;
   </script>
 
 </body>
