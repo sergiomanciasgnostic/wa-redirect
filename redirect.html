@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic | WhatsApp</title>
+  <title>Sergiomancias Gnostic</title>
   <style>
-    /* Estilos visuales originales preservados */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #442565; color: #fff; font-family: 'Segoe UI', Arial, sans-serif;
@@ -33,9 +32,7 @@
       background: #25D366; color: #fff; font-size: 15px;
       font-weight: bold; text-decoration: none;
       border-radius: 8px; cursor: pointer;
-      transition: background 0.3s ease;
     }
-    .btn:hover { background: #1ebe57; }
   </style>
 </head>
 <body>
@@ -48,7 +45,7 @@
     
     <div class="separador"></div>
     
-    <p>Si no eres redirigido automáticamente, toca el botón para abrir WhatsApp.</p>
+    <p>Si no eres redirigido, tocá el botón para abrir WhatsApp.</p>
     
     <div class="btn-wrap">
       <svg class="wa-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -60,89 +57,60 @@
   </div>
 
   <script>
-    const PHONE_NUMBER = '59894140917';
+    const phone = '59894140917';
 
-    function generarMensajeWhatsApp() {
+    function obtenerMensaje() {
+      const params = new URLSearchParams(window.location.search);
+      
+      // Función para extraer datos tanto de URL como de LocalStorage por si acaso
+      const d = (key) => params.get(key) || localStorage.getItem(key) || '';
+
+      const nombre = d('nombre');
+      const mancia = d('mancia');
+
+      // Si no detectamos datos mínimos, enviamos un mensaje de ayuda
+      if (!nombre && !mancia) {
+        return "Hola, Sergiomancias Gnostic. Quiero coordinar una lectura.";
+      }
+
+      // Replicamos el formato de Sergiomancias Gnostic
+      const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      const nombreMes = meses[parseInt(d('mes')) - 1] || '';
+      const despedida = d('sexo') === 'M' ? 'Estoy lista para coordinar mi lectura, gracias.' : 'Estoy listo para coordinar mi lectura, gracias.';
+
+      let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n`;
+      msg += `*Datos personales*\n_${nombre} ${d('apellido')}_\n`;
+      msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
+      msg += `Mi numerología es ${d('numerologia')}\n`;
+      if (d('zodiaco')) msg += `Soy del signo ${d('zodiaco')}\n`;
+      msg += `\n*Datomancia*\n${mancia}\n`;
+      if (d('extra')) msg += `2x1 con: ${d('extra')}\n`;
+      msg += `Duración de la lectura: ${d('minutos') || '0'} minutos\n`;
+      if (d('descuento') > 0) msg += `Descuento aplicado: ${d('descuento')}%\n`;
+      
+      if (mancia === 'Astrología') {
+        msg += `\n*Datos de Astrología*\nLugar: ${d('ciudad')}, ${d('pais')}\nHora: ${d('hora')}\n`;
+      }
+      
+      msg += `\n${despedida}`;
+      return msg;
+    }
+
+    function ejecutarRedireccion() {
       try {
-        // 1. Intentar capturar mensaje previo si viene por URL
-        const params = new URLSearchParams(window.location.search);
-        let mensajeCuerpo = params.get('msg') ? decodeURIComponent(params.get('msg')).replace(/\\n/g, '\n') : "";
-
-        // 2. Si no hay mensaje en URL, reconstruir desde localStorage[cite: 1]
-        if (!mensajeCuerpo) {
-          const nombre = localStorage.getItem('nombre') || '';
-          const apellido = localStorage.getItem('apellido') || '';
-          const dia = localStorage.getItem('dia') || '';
-          const mes = localStorage.getItem('mes') || '';
-          const anio = localStorage.getItem('anio') || '';
-          const sexo = localStorage.getItem('sexo') || 'H';
-          const mancia = localStorage.getItem('mancia') || '';
-          const minutos = localStorage.getItem('minutos') || '0';
-          const numero = localStorage.getItem('numerologia') || '';
-          const zodiaco = localStorage.getItem('zodiaco') || '';
-          const descuento = localStorage.getItem('descuento') || '0';
-          const extra = localStorage.getItem('extra') || '';
-          const tipoPago = localStorage.getItem('tipoPago') || '';
-          const tarjeta = localStorage.getItem('tarjeta') || '';
-          
-          // Datos específicos de Astrología
-          const pais = localStorage.getItem('pais') || '';
-          const provincia = localStorage.getItem('provincia') || '';
-          const ciudad = localStorage.getItem('ciudad') || '';
-          const hora = localStorage.getItem('hora') || '';
-
-          const mesesNombres = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-          const nombreMes = mesesNombres[parseInt(mes) - 1] || '';
-
-          // Lógica de personalización por género[cite: 1]
-          const despedida = sexo === 'H' ? 'Estoy listo para coordinar mi lectura, gracias.' : 'Estoy lista para coordinar mi lectura, gracias.';
-          
-          // Formateo de secciones opcionales
-          const mensajeZodiaco = zodiaco ? `Soy del signo ${zodiaco}\n` : '';
-          const mensajeDesc = parseInt(descuento) > 0 ? `Descuento aplicado: ${descuento}%\n` : '';
-          const mensajeExtra = extra ? `2x1 con: ${extra}\n` : '';
-          
-          let mensajePago = '';
-          if (tipoPago === 'PayPal') mensajePago = `Pagué por: *PayPal*\n`;
-          else if (tipoPago === 'Transferencia' && tarjeta) mensajePago = `Pagaré por transferencia con: *${tarjeta}*\n`;
-
-          let mensajeAstro = '';
-          if (mancia === 'Astrología') {
-            mensajeAstro = `\n*Datos de Astrología*\nLugar: ${ciudad}, ${provincia}, ${pais}\nHora: ${hora}\n`;
-          }
-
-          // Construcción del mensaje final[cite: 1]
-          mensajeCuerpo = 
-            `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n` +
-            `*Datos personales*\n_${nombre} ${apellido}_\n` +
-            `Nací el ${dia} de ${nombreMes} de ${anio}\n` +
-            `Mi numerología es ${numero}\n` + mensajeZodiaco +
-            `\n*Datomancia*\n${mancia}\n` + mensajeExtra +
-            `Duración de la lectura: ${minutos} minutos\n` + mensajeDesc + mensajePago +
-            mensajeAstro +
-            `\n${despedida}`;
-        }
-
-        const urlFinal = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encodeURIComponent(mensajeCuerpo)}`;
+        const texto = obtenerMensaje();
+        const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
         
-        // Actualizar el enlace del botón
-        const btn = document.getElementById('waBtn');
-        btn.href = urlFinal;
+        document.getElementById('waBtn').href = urlFinal;
 
-        // Redirección automática tras un breve delay para permitir que la página cargue
-        setTimeout(() => {
-          window.location.href = urlFinal;
-        }, 1000);
-
-      } catch (error) {
-        console.error("Error al procesar los datos:", error);
-        // Fallback al WhatsApp genérico en caso de error crítico
-        window.location.href = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}`;
+        // Redirección automática inmediata
+        window.location.href = urlFinal;
+      } catch (e) {
+        window.location.href = `https://api.whatsapp.com/send?phone=${phone}`;
       }
     }
 
-    // Iniciar proceso al cargar la ventana
-    window.onload = generarMensajeWhatsApp;
+    window.onload = ejecutarRedireccion;
   </script>
 
 </body>
