@@ -27,12 +27,21 @@
     const msg = params.get('msg');
     const phone = '59894140917';
     if (msg) {
-      const url = 'https://wa.me/' + phone + '?text=' + msg;
-      document.getElementById('waLink').href = url;
+      // Decodificar el mensaje y re-encodear para preservar saltos de línea
+      const textoDecodificado = decodeURIComponent(msg);
+      const msgFinal = encodeURIComponent(textoDecodificado);
+      const waUrl = 'https://wa.me/' + phone + '?text=' + msgFinal;
+      const nativoUrl = 'whatsapp://send?phone=' + phone + '&text=' + msgFinal;
+      // Botón manual siempre visible como fallback
+      document.getElementById('waLink').href = waUrl;
       document.getElementById('waLink').style.display = 'inline-block';
       document.getElementById('loading').style.display = 'none';
-      // Intentar abrir automáticamente también
-      window.open(url, '_blank');
+      // Intenta abrir app nativa primero
+      window.location.href = nativoUrl;
+      // Si no abrió la app, redirige a wa.me después de 1.5s
+      setTimeout(function() {
+        window.location.href = waUrl;
+      }, 1500);
     }
   </script>
 </body>
