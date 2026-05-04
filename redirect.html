@@ -3,38 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic | WhatsApp</title>
+  <title>Sergiomancias Gnostic</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #442565; color: #fff; font-family: sans-serif;
+      background: #442565; color: #fff; font-family: 'Segoe UI', Arial, sans-serif;
       display: flex; align-items: center; justify-content: center;
       min-height: 100vh; text-align: center; padding: 24px;
     }
     .card {
       background: #3a1f57; border: 1px solid rgba(255,106,0,0.35);
-      padding: 40px 32px; max-width: 340px; width: 100%; border-radius: 12px;
+      padding: 40px 32px; max-width: 340px; width: 100%;
+      border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    .sigilo { width: 90px; height: 90px; margin-bottom: 20px; }
+    .sigilo {
+      width: 90px; height: 90px; object-fit: contain; margin: 0 auto 20px; display: block;
+    }
     h2 { font-size: 22px; color: #FF6A00; margin-bottom: 8px; }
-    p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; }
+    p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; line-height: 1.4; }
     .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 20px 0; }
     .btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: #25D366; color: #fff; padding: 15px;
-      font-weight: bold; text-decoration: none; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 16px 10px; background: #25D366; color: #fff; 
+      font-size: 16px; font-weight: bold; text-decoration: none;
+      border-radius: 50px; cursor: pointer; transition: background 0.3s;
     }
-    .wa-icon { width: 24px; height: 24px; fill: white; }
+    .wa-icon { width: 25px; height: 25px; fill: white; }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Logo" />
+    <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
+    
     <h2>¡Todo listo!</h2>
-    <p>Prepárate para tu lectura con <strong>Sergiomancias Gnostic</strong>.</p>
+    <p>Prepárate para tu lectura con <br><strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+    
     <div class="separador"></div>
-    <p>Si no eres redirigido, toca el botón:</p>
+    
+    <p>Si no te redirige automáticamente, toca el botón verde.</p>
     
     <a id="waBtn" class="btn" href="#">
       <svg class="wa-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.52.909 3.298 1.389 5.111 1.39h.005c5.731 0 10.393-4.661 10.395-10.391 0-2.775-1.08-5.385-3.041-7.347-1.961-1.963-4.571-3.042-7.347-3.042-5.732 0-10.394 4.662-10.397 10.392 0 1.905.517 3.761 1.496 5.391l-.974 3.557 3.653-.958zm10.512-7.075c-.29-.145-1.714-.847-1.979-.943-.265-.096-.458-.145-.651.145-.193.291-.747.943-.916 1.136-.169.193-.338.217-.627.072-.29-.145-1.224-.451-2.331-1.439-.862-.769-1.443-1.718-1.612-2.009-.169-.29-.018-.447.127-.591.131-.13.29-.338.434-.507.145-.169.193-.29.29-.483.096-.193.048-.361-.024-.507-.072-.145-.651-1.571-.892-2.15-.234-.564-.471-.488-.651-.497h-.555c-.193 0-.507.072-.772.361-.265.291-1.013 1.013-1.013 2.46 0 1.448 1.054 2.846 1.203 3.039.148.193 2.074 3.167 5.024 4.444.702.304 1.25.485 1.678.621.705.224 1.346.193 1.854.117.566-.084 1.714-.7 1.954-1.374.242-.675.242-1.254.169-1.374-.073-.121-.265-.193-.555-.338z"/></svg>
@@ -45,25 +52,36 @@
   <script>
     const phone = '59894140917';
     const params = new URLSearchParams(window.location.search);
-    const msgParam = params.get('msg');
+    const msg = params.get('msg');
+    const waBtn = document.getElementById('waBtn');
 
-    if (msgParam) {
-      // 1. Limpiamos y preparamos el texto
-      let texto = decodeURIComponent(msgParam).replace(/\\n/g, '\n');
-      
-      // 2. Creamos la URL
-      const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(texto);
-      
-      // 3. Aplicamos al botón inmediatamente
-      const btn = document.getElementById('waBtn');
-      btn.href = finalUrl;
-
-      // 4. Intentamos enviar al usuario de inmediato
-      window.location.href = finalUrl;
-    } else {
-      // Si no hay mensaje, solo el número
-      document.getElementById('waBtn').href = "https://api.whatsapp.com/send?phone=" + phone;
+    // 1. Preparamos el enlace ANTES de cualquier otra cosa
+    let finalUrl = 'https://api.whatsapp.com/send?phone=' + phone;
+    if (msg) {
+      let texto = decodeURIComponent(msg).replace(/\\n/g, '\n');
+      finalUrl += '&text=' + encodeURIComponent(texto);
     }
+
+    // 2. Lo asignamos al botón inmediatamente
+    waBtn.href = finalUrl;
+
+    // 3. Función de redirección
+    function forzarRedireccion() {
+      window.location.href = finalUrl;
+    }
+
+    // 4. Disparar al cargar todo
+    window.addEventListener('load', function() {
+      if (msg) {
+        setTimeout(forzarRedireccion, 500);
+      }
+    });
+
+    // 5. Por seguridad extrema, si toca el botón, lo lleva sí o sí
+    waBtn.onclick = function() {
+      window.location.href = finalUrl;
+      return false;
+    };
   </script>
 
 </body>
