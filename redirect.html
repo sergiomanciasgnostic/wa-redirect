@@ -8,40 +8,24 @@
     body {
       background: #442565; color: #fff; font-family: Arial, sans-serif;
       display: flex; align-items: center; justify-content: center;
-      min-height: 100vh; margin: 0;
+      min-height: 100vh; margin: 0; text-align: center;
     }
-    .msg { text-align: center; }
-    .msg p { color: #d4b8f0; margin-top: 8px; font-size: 14px; }
+    p { color: #d4b8f0; margin-top: 12px; font-size: 15px; }
   </style>
 </head>
 <body>
-  <div class="msg">
-    <div style="font-size:48px">💬</div>
-    <p id="loading">Abriendo WhatsApp...</p>
-    <a id="waLink" href="#" style="display:none; margin-top:16px; padding:12px 24px; background:#25D366; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">
-      Abrir WhatsApp
-    </a>
+  <div>
+    <div style="font-size:52px">💬</div>
+    <p>Abriendo WhatsApp...</p>
   </div>
   <script>
     const params = new URLSearchParams(window.location.search);
     const msg = params.get('msg');
     const phone = '59894140917';
     if (msg) {
-      // Decodificar el mensaje y re-encodear para preservar saltos de línea
-      const textoDecodificado = decodeURIComponent(msg);
-      const msgFinal = encodeURIComponent(textoDecodificado);
-      const waUrl = 'https://wa.me/' + phone + '?text=' + msgFinal;
-      const nativoUrl = 'whatsapp://send?phone=' + phone + '&text=' + msgFinal;
-      // Botón manual siempre visible como fallback
-      document.getElementById('waLink').href = waUrl;
-      document.getElementById('waLink').style.display = 'inline-block';
-      document.getElementById('loading').style.display = 'none';
-      // Intenta abrir app nativa primero
-      window.location.href = nativoUrl;
-      // Si no abrió la app, redirige a wa.me después de 1.5s
-      setTimeout(function() {
-        window.location.href = waUrl;
-      }, 1500);
+      const texto = decodeURIComponent(msg);
+      const encoded = encodeURIComponent(texto);
+      window.location.href = 'https://wa.me/' + phone + '?text=' + encoded;
     }
   </script>
 </body>
