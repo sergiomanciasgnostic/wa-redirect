@@ -17,14 +17,22 @@
 <body>
   <div class="msg">
     <div style="font-size:48px">💬</div>
-    <p>Abriendo WhatsApp...</p>
+    <p id="loading">Abriendo WhatsApp...</p>
+    <a id="waLink" href="#" style="display:none; margin-top:16px; padding:12px 24px; background:#25D366; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">
+      Abrir WhatsApp
+    </a>
   </div>
   <script>
     const params = new URLSearchParams(window.location.search);
     const msg = params.get('msg');
     const phone = '59894140917';
     if (msg) {
-      window.location.href = 'https://wa.me/' + phone + '?text=' + msg;
+      const url = 'https://wa.me/' + phone + '?text=' + msg;
+      document.getElementById('waLink').href = url;
+      document.getElementById('waLink').style.display = 'inline-block';
+      document.getElementById('loading').style.display = 'none';
+      // Intentar abrir automáticamente también
+      window.open(url, '_blank');
     }
   </script>
 </body>
