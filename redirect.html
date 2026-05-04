@@ -3,81 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic</title>
+  <title>Sergiomancias Gnostic | WhatsApp</title>
   <style>
+    /* Estética General */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #442565; color: #fff; font-family: 'Segoe UI', Arial, sans-serif;
+      background: #442565; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif;
       display: flex; align-items: center; justify-content: center;
-      min-height: 100vh; text-align: center; padding: 24px;
+      min-height: 100vh; text-align: center; padding: 20px;
     }
     .card {
-      background: #3a1f57; border: 1px solid rgba(255,106,0,0.35);
-      padding: 40px 32px; max-width: 340px; width: 100%;
-      border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      background: #3a1f57; border: 1px solid rgba(255,106,0,0.3);
+      padding: 40px 25px; max-width: 360px; width: 100%;
+      border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
-    .sigilo {
-      width: 90px; height: 90px; object-fit: contain; margin: 0 auto 20px; display: block;
+    .sigilo { width: 100px; margin-bottom: 20px; }
+    h2 { font-size: 24px; color: #FF6A00; margin-bottom: 10px; font-weight: 600; }
+    p { color: #d4b8f0; font-size: 15px; margin-bottom: 25px; line-height: 1.5; }
+    
+    /* Botón Profesional con Logo Integrado */
+    .btn-wa {
+      display: inline-flex; align-items: center; justify-content: center;
+      background-color: #25D366; color: white;
+      text-decoration: none; font-weight: bold; font-size: 17px;
+      padding: 14px 28px; border-radius: 50px;
+      transition: all 0.3s ease; width: 100%;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
     }
-    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 8px; }
-    p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; line-height: 1.4; }
-    .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 20px 0; }
-    .btn-wrap {
-      display: flex; align-items: center; gap: 12px; margin-top: 10px;
+    .btn-wa:hover {
+      background-color: #1ebe57; transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
     }
-    .wa-icon { width: 42px; height: 42px; flex-shrink: 0; }
-    .btn {
-      display: flex; align-items: center; justify-content: center;
-      flex: 1; padding: 14px 10px;
-      background: #25D366; color: #fff; font-size: 15px;
-      font-weight: bold; text-decoration: none;
-      border-radius: 8px; cursor: pointer;
+    .btn-wa:active { transform: translateY(1px); }
+    .wa-svg { width: 24px; height: 24px; margin-right: 12px; fill: currentColor; }
+
+    .separador { 
+      height: 1px; background: rgba(255,106,0,0.2); 
+      margin: 25px 0; width: 100%; 
     }
   </style>
 </head>
 <body>
 
   <div class="card">
+    <!-- Tu Sigilo/Logo -->
     <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
     
-    <h2>¡Todo listo!</h2>
-    <p>Prepárate para tu lectura con <br><strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+    <h2>Conexión Lista</h2>
+    <p>Estamos preparando tu consulta profesional con <strong>Sergiomancias Gnostic</strong>.</p>
     
     <div class="separador"></div>
     
-    <p>Si no eres redirigido, tocá el botón para abrir WhatsApp.</p>
+    <p>Si no eres redirigido automáticamente:</p>
     
-    <div class="btn-wrap">
-      <svg class="wa-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="24" cy="24" r="24" fill="#25D366"/>
-        <path fill="#fff" d="M34.5 13.5A14.9 14.9 0 0 0 24 9C15.7 9 9 15.7 9 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2A14.9 14.9 0 0 0 24 39c8.3 0 15-6.7 15-15 0-4-1.6-7.8-4.5-10.5zm-10.5 23a12.4 12.4 0 0 1-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5A12.4 12.4 0 0 1 11.6 24c0-6.8 5.6-12.4 12.4-12.4 3.3 0 6.4 1.3 8.8 3.6a12.3 12.3 0 0 1 3.6 8.8c0 6.9-5.5 12.5-12.4 12.5zm6.8-9.3c-.4-.2-2.2-1.1-2.6-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.5-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.7-.6-.6-.9-.7h-.7c-.3 0-.7.1-1 .4-.4.4-1.4 1.4-1.4 3.3s1.4 3.8 1.6 4.1c.2.3 2.8 4.2 6.7 5.9 4 1.7 4 1.1 4.7 1 .7-.1 2.2-.9 2.5-1.7.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/>
+    <!-- Botón con Logo Integrado -->
+    <a id="waBtn" class="btn-wa" href="#">
+      <svg class="wa-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
       </svg>
-      <a id="waBtn" class="btn" href="#">Ir a WhatsApp</a>
-    </div>
+      Abrir WhatsApp
+    </a>
   </div>
 
   <script>
     const phone = '59894140917';
 
-    function obtenerMensaje() {
+    function construirMensaje() {
       const params = new URLSearchParams(window.location.search);
       
-      // Función para extraer datos tanto de URL como de LocalStorage por si acaso
-      const d = (key) => params.get(key) || localStorage.getItem(key) || '';
+      // Función para obtener y limpiar datos
+      const d = (key) => {
+        let valor = params.get(key) || localStorage.getItem(key) || '';
+        return decodeURIComponent(valor).replace(/\+/g, ' ').trim();
+      };
 
       const nombre = d('nombre');
       const mancia = d('mancia');
 
-      // Si no detectamos datos mínimos, enviamos un mensaje de ayuda
-      if (!nombre && !mancia) {
+      // Respaldo por si GitHub pierde la info
+      if (!nombre || !mancia) {
         return "Hola, Sergiomancias Gnostic. Quiero coordinar una lectura.";
       }
 
-      // Replicamos el formato de Sergiomancias Gnostic
       const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
       const nombreMes = meses[parseInt(d('mes')) - 1] || '';
       const despedida = d('sexo') === 'M' ? 'Estoy lista para coordinar mi lectura, gracias.' : 'Estoy listo para coordinar mi lectura, gracias.';
 
+      // Montaje del mensaje profesional
       let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n`;
       msg += `*Datos personales*\n_${nombre} ${d('apellido')}_\n`;
       msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
@@ -85,7 +97,7 @@
       if (d('zodiaco')) msg += `Soy del signo ${d('zodiaco')}\n`;
       msg += `\n*Datomancia*\n${mancia}\n`;
       if (d('extra')) msg += `2x1 con: ${d('extra')}\n`;
-      msg += `Duración de la lectura: ${d('minutos') || '0'} minutos\n`;
+      msg += `Duración de la lectura: ${d('minutos')} minutos\n`;
       if (d('descuento') > 0) msg += `Descuento aplicado: ${d('descuento')}%\n`;
       
       if (mancia === 'Astrología') {
@@ -96,21 +108,19 @@
       return msg;
     }
 
-    function ejecutarRedireccion() {
-      try {
-        const texto = obtenerMensaje();
-        const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
-        
-        document.getElementById('waBtn').href = urlFinal;
+    function iniciarRedireccion() {
+      const texto = construirMensaje();
+      const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
+      
+      document.getElementById('waBtn').href = urlFinal;
 
-        // Redirección automática inmediata
+      // Pequeña espera para asegurar que el diseño cargue antes de saltar a WhatsApp
+      setTimeout(() => {
         window.location.href = urlFinal;
-      } catch (e) {
-        window.location.href = `https://api.whatsapp.com/send?phone=${phone}`;
-      }
+      }, 1200);
     }
 
-    window.onload = ejecutarRedireccion;
+    window.onload = iniciarRedireccion;
   </script>
 
 </body>
