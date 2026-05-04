@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SM.G</title>
+  <title>Sergiomancias Gnostic</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -32,7 +32,6 @@
       background: #25D366; color: #fff; font-size: 15px;
       font-weight: bold; text-decoration: none;
       border-radius: 8px; cursor: pointer; letter-spacing: 0.05em;
-      transition: background 0.3s;
     }
   </style>
 </head>
@@ -46,7 +45,7 @@
     
     <div class="separador"></div>
     
-    <p>Si no eres redirigido, tocá el botón para enviar tus datos.</p>
+    <p>Si no eres redirigido, tocá el botón para abrir WhatsApp.</p>
     
     <div class="btn-wrap">
       <svg class="wa-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -58,36 +57,43 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const msg = params.get('msg');
     const phone = '59894140917';
     const waBtn = document.getElementById('waBtn');
 
-    // --- LÓGICA DE LOCALSTORAGE ---
-    let extraInfo = "";
-    // Ejemplo: Si guardaste datos bajo la clave 'datosUsuario'
-    const storedData = localStorage.getItem('datosUsuario'); 
-    
-    if (storedData) {
-        // Añadimos un encabezado y los datos guardados
-        extraInfo = "\n\n--- DATOS ADICIONALES ---\n" + storedData;
+    function enviarDatos() {
+        // 1. Recoger MSG de la URL
+        const params = new URLSearchParams(window.location.search);
+        let textoFinal = params.get('msg') ? decodeURIComponent(params.get('msg')).replace(/\\n/g, '\n') : "";
+
+        // 2. Recoger TODO lo del LocalStorage y sumarlo
+        let datosLocal = "";
+        for (let i = 0; i < localStorage.length; i++) {
+            let clave = localStorage.key(i);
+            let valor = localStorage.getItem(clave);
+            datosLocal += `\n${clave.toUpperCase()}: ${valor}`;
+        }
+
+        if (datosLocal !== "") {
+            textoFinal += "\n\n--- DATOS ADICIONALES ---" + datosLocal;
+        }
+
+        // 3. Crear URL y redirigir
+        const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(textoFinal);
+        
+        waBtn.href = finalUrl;
+        window.location.href = finalUrl;
     }
 
-    // --- CONSTRUCCIÓN DEL MENSAJE FINAL ---
-    let textoBase = msg ? decodeURIComponent(msg).replace(/\\n/g, '\n') : "";
-    let textoCompleto = textoBase + extraInfo;
+    // Intentar envío automático al cargar
+    window.onload = function() {
+        enviarDatos();
+    };
 
-    if (textoCompleto.trim() !== "") {
-      const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(textoCompleto);
-      
-      waBtn.href = finalUrl;
-      
-      // Redirección inmediata
-      window.location.href = finalUrl;
-    } else {
-      // Si no hay nada, solo abre el chat con el número
-      waBtn.href = "https://api.whatsapp.com/send?phone=" + phone;
-    }
+    // Si el usuario hace clic (por si falla el auto)
+    waBtn.onclick = function(e) {
+        enviarDatos();
+        return false;
+    };
   </script>
 
 </body>
