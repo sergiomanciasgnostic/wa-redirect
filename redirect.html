@@ -3,42 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lectura con Sergiomancias Gnostic</title>
+    <title>Sergiomancias Gnostic</title>
     <style>
-        body { background: #442565; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: #442565; color: #fff; font-family: sans-serif;
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; text-align: center; padding: 20px;
+        }
+        .card {
+            background: #3a1f57; border: 1px solid rgba(255,106,0,0.35);
+            padding: 40px 32px; max-width: 340px; width: 100%;
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .sigilo {
+            width: 90px; height: 90px; object-fit: contain; margin: 0 auto 20px; display: block;
+        }
+        h2 { font-size: 22px; color: #FF6A00; margin-bottom: 8px; }
+        p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; line-height: 1.4; }
+        .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 20px 0; }
         .btn { 
-            background: #25D366; color: white; padding: 20px 40px; 
+            display: block; background: #25D366; color: white; padding: 16px 20px; 
             text-decoration: none; font-weight: bold; border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-top: 10px;
+            letter-spacing: 0.05em;
         }
     </style>
 </head>
 <body>
 
-    <!-- El botón por defecto lleva solo el número -->
-    <a id="waBtn" class="btn" href="https://api.whatsapp.com/send?phone=59894140917">
-        ABRIR WHATSAPP
-    </a>
+    <div class="card">
+        <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
+        
+        <h2>¡Todo listo!</h2>
+        <p>Prepárate para tu lectura con <br><strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+        
+        <div class="separador"></div>
+        
+        <p>Tocá el botón para abrir WhatsApp.</p>
+
+        <!-- El botón llama directamente a la API de WhatsApp -->
+        <a id="waBtn" class="btn" href="https://api.whatsapp.com/send?phone=59894140917">
+            ABRIR WHATSAPP
+        </a>
+    </div>
 
     <script>
-        const params = new URLSearchParams(window.location.search);
-        let msg = params.get('msg');
         const phone = "59894140917";
+        const params = new URLSearchParams(window.location.search);
+        const msg = params.get('msg');
 
         if (msg) {
-            // 1. Decodificamos el mensaje que viene de la URL
+            // 1. Decodificamos lo que llega por URL
             let textoLimpio = decodeURIComponent(msg);
 
-            // 2. REPARACIÓN: Reemplazamos cualquier "\n" literal por un salto de línea real
-            // Esto es lo que separa los párrafos en WhatsApp
+            // 2. REPARACIÓN: Convertimos los \n en saltos de línea reales
             textoLimpio = textoLimpio.replace(/\\n/g, '\n');
 
-            // 3. Construimos la URL final codificando el texto ya reparado
+            // 3. Creamos la URL final con el texto ya separado en párrafos
             const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(textoLimpio);
             
-            // Actualizamos el botón y redirigimos
+            // 4. Actualizamos el botón por si el usuario hace clic manual
             document.getElementById('waBtn').href = finalUrl;
+
+            // 5. Redirección automática inmediata
             window.location.href = finalUrl;
         }
     </script>
