@@ -2,62 +2,81 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Conectando con WhatsApp - Sergiomancias Gnostic</title>
+    <title>Confirmación de Lectura – Sergiomancias Gnostic</title>
     <style>
-        body { background: #442565; color: white; font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .loader { border: 4px solid rgba(255,106,0,0.1); border-left-color: #FF6A00; width: 40px; height: 40px; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .btn-manual { display: none; padding: 15px 25px; background: #25D366; color: white; text-decoration: none; font-weight: bold; border-radius: 50px; margin-top: 20px; transition: 0.3s; }
-        .btn-manual:hover { background: #128C7E; transform: scale(1.05); }
+        :root {
+            --gold: #FF6A00;
+            --dark: #442565;
+        }
+        body { 
+            background: var(--dark); 
+            color: white; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0;
+            text-align: center;
+        }
+        .card {
+            background: #3a1f57;
+            padding: 30px;
+            border: 1px solid rgba(255,106,0,0.3);
+            border-radius: 12px;
+            max-width: 400px;
+        }
+        .btn-whatsapp {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
-    <div class="loader"></div>
-    <h2 id="status">Abriendo WhatsApp Web...</h2>
-    <p id="msg-info">Estamos procesando tu lectura esotérica.</p>
-    
-    <!-- Botón de respaldo por si el navegador bloquea el popup -->
-    <a id="btnWA" class="btn-manual" href="#">ABRIR WHATSAPP MANUALMENTE</a>
+
+    <div class="card">
+        <h2 style="color: var(--gold);">¡Datos Recibidos!</h2>
+        <p>Para abrir WhatsApp Web y coordinar tu sesión con Sergio, presiona el botón de abajo:</p>
+        
+        <a id="finalBtn" class="btn-whatsapp" href="#">ABRIR WHATSAPP WEB</a>
+    </div>
 
     <script>
-        // 1. CAPTURAR DATOS DE LA URL (Vienen de tu web principal)
+        // 1. EXTRAER DATOS DE LA URL (Esto sobrevive al cambio de dominio)
         const params = new URLSearchParams(window.location.search);
         
-        // Extraemos las variables que enviaste
         const nombre = params.get('nom') || 'Cliente';
         const mancia = params.get('man') || 'Lectura';
-        const extra = params.get('ext') || '';
         const numero = params.get('num') || '';
-        const total = params.get('min') || '';
 
         // 2. CONSTRUIR EL MENSAJE
-        let texto = `Hola Sergio, soy ${nombre}.\n`;
-        texto += `He confirmado mi pago para: ${mancia}${extra ? ' + ' + extra : ''}.\n`;
+        let texto = `Hola Sergio, soy ${nombre}.\nHe confirmado mi pago para mi lectura de ${mancia}.\n`;
         if(numero) texto += `Mi numerología es: ${numero}.\n`;
-        if(total) texto += `Duración: ${total} minutos.\n`;
-        texto += `\nEstoy listo/a para coordinar.`;
+        texto += `Estoy listo para coordinar por aquí.`;
 
         const mensajeFinal = encodeURIComponent(texto);
-        const urlWA = `https://web.whatsapp.com/send?phone=59894140917&text=${mensajeFinal}`;
-        // Nota: Usamos web.whatsapp.com para forzar la versión de escritorio en PC.
+        
+        // 3. ASIGNAR AL BOTÓN (Forzamos WhatsApp Web para PC)
+        const btn = document.getElementById('finalBtn');
+        btn.href = `https://web.whatsapp.com/send?phone=59894140917&text=${mensajeFinal}`;
 
-        // 3. INTENTAR APERTURA AUTOMÁTICA
-        function abrirWhatsApp() {
-            // Intentamos abrir en la misma pestaña para evitar bloqueos de popups
-            window.location.href = urlWA;
-        }
-
-        // Ejecutar al cargar
-        setTimeout(abrirWhatsApp, 1500);
-
-        // 4. MOSTRAR BOTÓN SI TARDA (SEGURIDAD PARA PC)
+        // 4. AUTO-REDIRECCIÓN (Como respaldo, si el PC lo permite)
         setTimeout(() => {
-            const btn = document.getElementById('btnWA');
-            const status = document.getElementById('status');
-            btn.href = urlWA;
-            btn.style.display = 'inline-block';
-            status.innerText = "Si no abrió automáticamente:";
-        }, 4000);
+            window.location.href = btn.href;
+        }, 2000);
     </script>
 </body>
 </html>
