@@ -3,73 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verificación – Sergiomancias Gnostic</title>
+  <title>Sergiomancias Gnostic - Redirección</title>
   <style>
-    :root { --gold: #FF6A00; --dark: #442565; --dark-card: #3a1f57; --text-muted: #d4b8f0; }
+    :root { --gold: #FF6A00; --dark: #442565; --card: #3a1f57; --text: #d4b8f0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--dark); color: #fff; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+    body { background: var(--dark); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
     .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 800px; width: 100%; }
-    .card { background: var(--dark-card); border: 1px solid rgba(255,106,0,0.3); padding: 25px; flex: 1; min-width: 300px; border-radius: 12px; text-align: center; }
+    .card { background: var(--card); border: 1px solid rgba(255,106,0,0.3); padding: 30px; flex: 1; min-width: 300px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(255,106,0,0.2); padding-bottom: 5px; text-align: left; }
-    .data-list { list-style: none; text-align: left; font-size: 14px; }
-    .data-list li { margin-bottom: 10px; display: flex; justify-content: space-between; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
-    .data-list span { color: #fff; font-weight: bold; text-align: right; margin-left: 10px; }
-    .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 15px; border-radius: 50px; font-weight: bold; margin-top: 20px; transition: 0.3s; }
-    .logo { width: 70px; margin-bottom: 10px; }
+    .data-list { list-style: none; text-align: left; font-size: 15px; }
+    .data-list li { margin-bottom: 12px; display: flex; justify-content: space-between; color: var(--text); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+    .data-list span { color: #fff; font-weight: bold; }
+    .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 16px; border-radius: 50px; font-weight: bold; margin-top: 25px; transition: 0.3s; font-size: 18px; }
+    .btn-wa:hover { background: #1ebe57; transform: scale(1.03); }
+    .logo { width: 80px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-<div id="errorMsg" style="display:none; text-align:center;">
-    <h2 style="color:var(--gold);">Error de Datos</h2>
-    <p>No pudimos recuperar tu información. Por favor, vuelve a completar el formulario.</p>
-    <a href="javascript:history.back()" style="color:#fff; text-decoration:underline; margin-top:20px; display:block;">Volver atrás</a>
-</div>
-
-<div class="container" id="mainContent" style="display:none;">
+<div class="container" id="main" style="display:none;">
   <div class="card">
-    <h3>Lista de Verificación</h3>
-    <ul class="data-list" id="previewList"></ul>
+    <h3>Confirma tu información</h3>
+    <ul class="data-list" id="preview"></ul>
   </div>
 
   <div class="card">
     <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png">
-    <h2 style="color:var(--gold); margin-bottom:10px;">¡Datos Verificados!</h2>
-    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Redirigiendo a WhatsApp para coordinar tu lectura...</p>
-    <a id="waBtn" class="btn-wa" href="#">Abrir WhatsApp Ahora</a>
+    <h2 style="color:var(--gold); margin-bottom:10px;">¡Datos Listos!</h2>
+    <p style="color:var(--text); font-size:14px;">Redirigiendo a WhatsApp en 3 segundos...</p>
+    <a id="linkWA" class="btn-wa" href="#">Enviar a WhatsApp</a>
   </div>
+</div>
+
+<div id="error" style="display:none; text-align:center;">
+    <h2 style="color:var(--gold);">Error de Datos</h2>
+    <p>No recibimos información del formulario.</p>
+    <a href="https://sergiomanciasgnostic.com" style="color:#fff; display:block; margin-top:20px;">Volver al inicio</a>
 </div>
 
 <script>
   window.onload = function() {
-    // Buscamos la info en el almacenamiento local
-    const mensajeFinal = localStorage.getItem('mensajeWhatsApp');
+    const params = new URLSearchParams(window.location.search);
+    const rawData = params.get('data');
 
-    if (mensajeFinal) {
-      document.getElementById('mainContent').style.display = 'flex';
+    if (rawData) {
+      document.getElementById('main').style.display = 'flex';
+      const msg = decodeURIComponent(rawData);
       
-      // Función para extraer datos del texto para la lista visual
-      const extraer = (regex) => {
-        const match = mensajeFinal.match(regex);
-        return match ? match[1].replace(/_/g, '').trim() : "---";
+      const extraer = (reg) => {
+        const m = msg.match(reg);
+        return m ? m[1].replace(/_/g, '').trim() : "No indicado";
       };
 
-      const lista = document.getElementById('previewList');
-      lista.innerHTML = `
+      // Mostramos la lista con tus datos reales
+      document.getElementById('preview').innerHTML = `
         <li>Nombre: <span>${extraer(/\*Datos personales\*\n(.*?)\n/)}</span></li>
         <li>Nacimiento: <span>${extraer(/Nací el (.*?)\n/)}</span></li>
-        <li>Mancia: <span>${extraer(/\*Datomancia\*\n(.*?)\n/)}</span></li>
-        <li>Duración: <span>${extraer(/Duración de la lectura: (.*?)\n/)}</span></li>
+        <li>Servicio: <span>${extraer(/\*Datomancia\*\n(.*?)\n/)}</span></li>
+        <li>Lectura: <span>${extraer(/Duración de la lectura: (.*?)\n/)}</span></li>
       `;
 
-      const phone = "59894140917";
-      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(mensajeFinal)}`;
-      document.getElementById('waBtn').href = waUrl;
+      const finalUrl = `https://wa.me/59894140917?text=${encodeURIComponent(msg)}`;
+      document.getElementById('linkWA').href = finalUrl;
 
-      // Auto-redirección en 3 segundos
-      setTimeout(() => { window.location.href = waUrl; }, 3000);
+      setTimeout(() => { window.location.href = finalUrl; }, 3000);
     } else {
-      document.getElementById('errorMsg').style.display = 'block';
+      document.getElementById('error').style.display = 'block';
     }
   };
 </script>
