@@ -1,101 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación – Sergiomancias Gnostic</title>
-    <style>
-        :root { --gold: #FF6A00; --dark: #442565; --card: #3a1f57; --text: #d4b8f0; }
-        body { 
-            background: var(--dark); 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
-            margin: 0; 
-        }
-        .card { 
-            background: var(--card); 
-            border: 1px solid var(--gold); 
-            padding: 30px; 
-            border-radius: 15px; 
-            text-align: center; 
-            max-width: 450px; 
-            width: 90%; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .info-box { 
-            background: rgba(0,0,0,0.3); 
-            padding: 15px; 
-            border-radius: 8px; 
-            text-align: left; 
-            margin: 20px 0; 
-            font-size: 14px; 
-            white-space: pre-wrap; 
-            border-left: 3px solid var(--gold); 
-            color: var(--text);
-            line-height: 1.5;
-        }
-        .btn-wa { 
-            display: none; 
-            background: #25D366; 
-            color: #fff; 
-            text-decoration: none; 
-            padding: 16px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 18px; 
-            transition: 0.3s;
-        }
-        .btn-wa:hover { background: #1ebe57; transform: scale(1.05); }
-        .logo { width: 80px; margin-bottom: 15px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sergiomancias Gnostic | WhatsApp</title>
+  <style>
+    /* Estética General */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #442565; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; text-align: center; padding: 20px;
+    }
+    .card {
+      background: #3a1f57; border: 1px solid rgba(255,106,0,0.3);
+      padding: 40px 25px; max-width: 360px; width: 100%;
+      border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+    .sigilo { width: 100px; margin-bottom: 20px; }
+    h2 { font-size: 24px; color: #FF6A00; margin-bottom: 10px; font-weight: 600; }
+    p { color: #d4b8f0; font-size: 15px; margin-bottom: 25px; line-height: 1.5; }
+    
+    /* Botón Profesional con Logo Integrado */
+    .btn-wa {
+      display: inline-flex; align-items: center; justify-content: center;
+      background-color: #25D366; color: white;
+      text-decoration: none; font-weight: bold; font-size: 17px;
+      padding: 14px 28px; border-radius: 50px;
+      transition: all 0.3s ease; width: 100%;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+    .btn-wa:hover {
+      background-color: #1ebe57; transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+    .btn-wa:active { transform: translateY(1px); }
+    .wa-svg { width: 24px; height: 24px; margin-right: 12px; fill: currentColor; }
+
+    .separador { 
+      height: 1px; background: rgba(255,106,0,0.2); 
+      margin: 25px 0; width: 100%; 
+    }
+  </style>
 </head>
 <body>
 
   <div class="card">
-    <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png">
-    <h2 style="color:var(--gold); margin-top:0;">INFORMACIÓN RECUPERADA</h2>
+    <!-- Tu Sigilo/Logo -->
+    <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
     
-    <div id="info" class="info-box">Buscando datos del formulario...</div>
+    <h2>Conexión Lista</h2>
+    <p>Estamos preparando tu consulta profesional con <strong>Sergiomancias Gnostic</strong>.</p>
     
-    <!-- Este botón solo llevará a WhatsApp al hacer clic -->
-    <a id="btnWA" class="btn-wa" href="#">ENVIAR A WHATSAPP</a>
+    <div class="separador"></div>
     
-    <p id="status" style="font-size: 12px; margin-top: 15px; color: var(--text);">
-        Verifica que los datos sean correctos antes de enviar.
-    </p>
+    <p>Si no eres redirigido automáticamente:</p>
+    
+    <!-- Botón con Logo Integrado -->
+    <a id="waBtn" class="btn-wa" href="#">
+      <svg class="wa-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      Abrir WhatsApp
+    </a>
   </div>
 
-<script>
-  window.onload = function() {
-    // 1. Intentamos obtener los datos de la URL (msj)
-    const params = new URLSearchParams(window.location.search);
-    const msjURL = params.get('msj');
+  <script>
+    const phone = '59894140917';
 
-    // 2. Intentamos obtener los datos del localStorage como respaldo
-    const msjLocal = localStorage.getItem('mensajeWhatsApp');
-
-    // Usamos el que esté disponible
-    const mensajeFinal = msjURL ? decodeURIComponent(msjURL) : msjLocal;
-
-    if (mensajeFinal) {
-      // Mostramos el texto en el cuadro
-      document.getElementById('info').innerText = mensajeFinal;
+    function construirMensaje() {
+      const params = new URLSearchParams(window.location.search);
       
-      // Configuramos el botón y lo mostramos
-      const btn = document.getElementById('btnWA');
-      btn.style.display = 'block';
-      btn.href = "https://wa.me/59894140917?text=" + encodeURIComponent(mensajeFinal);
+      // Función para obtener y limpiar datos
+      const d = (key) => {
+        let valor = params.get(key) || localStorage.getItem(key) || '';
+        return decodeURIComponent(valor).replace(/\+/g, ' ').trim();
+      };
+
+      const nombre = d('nombre');
+      const mancia = d('mancia');
+
+      // Respaldo por si GitHub pierde la info
+      if (!nombre || !mancia) {
+        return "Hola, Sergiomancias Gnostic. Quiero coordinar una lectura.";
+      }
+
+      const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      const nombreMes = meses[parseInt(d('mes')) - 1] || '';
+      const despedida = d('sexo') === 'M' ? 'Estoy lista para coordinar mi lectura, gracias.' : 'Estoy listo para coordinar mi lectura, gracias.';
+
+      // Montaje del mensaje profesional
+      let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n`;
+      msg += `*Datos personales*\n_${nombre} ${d('apellido')}_\n`;
+      msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
+      msg += `Mi numerología es ${d('numerologia')}\n`;
+      if (d('zodiaco')) msg += `Soy del signo ${d('zodiaco')}\n`;
+      msg += `\n*Datomancia*\n${mancia}\n`;
+      if (d('extra')) msg += `2x1 con: ${d('extra')}\n`;
+      msg += `Duración de la lectura: ${d('minutos')} minutos\n`;
+      if (d('descuento') > 0) msg += `Descuento aplicado: ${d('descuento')}%\n`;
       
-      document.getElementById('status').innerText = "Listo para enviar.";
-    } else {
-      document.getElementById('info').innerHTML = "<span style='color:#ff4444;'>⚠️ No se detectaron datos.<br>Vuelve al formulario e intenta nuevamente.</span>";
-      document.getElementById('status').innerText = "Error de comunicación.";
+      if (mancia === 'Astrología') {
+        msg += `\n*Datos de Astrología*\nLugar: ${d('ciudad')}, ${d('pais')}\nHora: ${d('hora')}\n`;
+      }
+      
+      msg += `\n${despedida}`;
+      return msg;
     }
-  };
-</script>
+
+    function iniciarRedireccion() {
+      const texto = construirMensaje();
+      const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
+      
+      document.getElementById('waBtn').href = urlFinal;
+
+      // Pequeña espera para asegurar que el diseño cargue antes de saltar a WhatsApp
+      setTimeout(() => {
+        window.location.href = urlFinal;
+      }, 1200);
+    }
+
+    window.onload = iniciarRedireccion;
+  </script>
+
 </body>
 </html>
