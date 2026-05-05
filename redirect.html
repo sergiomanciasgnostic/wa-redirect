@@ -3,153 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic - Confirmación</title>
+  <title>Sergiomancias Gnostic - Verificación</title>
   <style>
+    /* ... (Mantén tus estilos CSS anteriores aquí) ... */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #442565; color: #fff; font-family: 'Segoe UI', Roboto, sans-serif;
-      display: flex; align-items: center; justify-content: center;
-      min-height: 100vh; padding: 20px;
-    }
-    .container {
-      display: flex; flex-wrap: wrap; gap: 20px;
-      max-width: 850px; width: 100%; justify-content: center;
-    }
-    .card {
-      background: #3a1f57; border: 1px solid rgba(255,106,0,0.3);
-      padding: 30px; flex: 1; min-width: 320px;
-      border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      display: flex; flex-direction: column; align-items: center;
-    }
-    .info-panel {
-      background: rgba(255, 255, 255, 0.05); border-radius: 12px;
-      padding: 20px; text-align: left; width: 100%;
-    }
+    body { background: #442565; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+    .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 850px; width: 100%; justify-content: center; }
+    .card { background: #3a1f57; border: 1px solid rgba(255,106,0,0.3); padding: 30px; flex: 1; min-width: 320px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
+    .info-panel { background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; text-align: left; width: 100%; }
     .sigilo { width: 80px; margin-bottom: 15px; }
-    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 15px; font-weight: 600; }
+    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 15px; }
     h3 { font-size: 14px; color: #FF6A00; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid rgba(255,106,0,0.3); padding-bottom: 5px; }
-    
     .data-list { list-style: none; font-size: 14px; color: #d4b8f0; }
     .data-list li { margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .data-list span { color: #fff; font-weight: 500; text-align: right; margin-left: 10px; }
-
-    .btn-wa {
-      display: inline-flex; align-items: center; justify-content: center;
-      background-color: #25D366; color: white;
-      text-decoration: none; font-weight: bold; font-size: 17px;
-      padding: 14px 28px; border-radius: 50px; margin-top: 20px;
-      transition: all 0.3s ease; width: 100%;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    }
+    .data-list span { color: #fff; font-weight: 500; text-align: right; }
+    .btn-wa { display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; color: white; text-decoration: none; font-weight: bold; font-size: 17px; padding: 14px 28px; border-radius: 50px; margin-top: 20px; width: 100%; transition: 0.3s; }
     .btn-wa:hover { background-color: #1ebe57; transform: translateY(-2px); }
-    .wa-svg { width: 24px; height: 24px; margin-right: 12px; fill: currentColor; }
-    
-    @media (max-width: 600px) {
-      .container { flex-direction: column; }
-    }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Panel de Verificación -->
     <div class="card">
       <h3>Verifica tus datos</h3>
       <div class="info-panel">
-        <ul class="data-list" id="preview-list">
-          <!-- Se llena con JS -->
-        </ul>
+        <ul class="data-list" id="preview-list"></ul>
       </div>
     </div>
 
-    <!-- Panel de Acción -->
     <div class="card">
-      <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Logo" />
+      <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" />
       <h2>¡Casi listo!</h2>
-      <p style="color:#d4b8f0; font-size:14px; margin-bottom:20px;">Serás redirigido a WhatsApp en segundos para coordinar tu lectura.</p>
-      
-      <a id="waBtn" class="btn-wa" href="#" target="_blank">
-        <svg class="wa-svg" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        Abrir WhatsApp
-      </a>
+      <p style="color:#d4b8f0; font-size:14px; margin-bottom:20px;">Redirigiendo a WhatsApp para coordinar...</p>
+      <a id="waBtn" class="btn-wa" href="#">Abrir WhatsApp</a>
     </div>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const d = (key) => {
-      const val = params.get(key);
-      return val ? decodeURIComponent(val).replace(/\+/g, ' ').trim() : 'No proporcionado';
-    };
+    const d = (key) => decodeURIComponent(params.get(key) || '').replace(/\+/g, ' ').trim();
 
-    function mostrarVistaPrevia() {
-      const lista = document.getElementById('preview-list');
-      const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-      const nombreMes = meses[parseInt(d('mes')) - 1] || '';
-
-      const datos = [
-        { label: 'Nombre:', value: `${d('nom')} ${d('ape')}` },
-        { label: 'Nacimiento:', value: `${d('dia')} de ${nombreMes} de ${d('anio')}` },
-        { label: 'Numerología:', value: d('num') },
-        { label: 'Servicio:', value: d('man') },
-        { label: 'Duración:', value: `${d('min')} min` }
-      ];
-
-      if (d('zod') !== 'No proporcionado') datos.splice(2, 0, { label: 'Signo:', value: d('zod') });
-      if (d('ext') !== 'No proporcionado') datos.push({ label: 'Extra 2x1:', value: d('ext') });
+    function iniciar() {
+      const nombre = d('nom');
+      const apellido = d('ape');
+      const mancia = d('man');
       
-      if (d('man').includes('Astrología') || d('ext').includes('Astrología')) {
-        datos.push({ label: 'Lugar:', value: `${d('ciu')}, ${d('pai')}` });
-        datos.push({ label: 'Hora:', value: d('hor') });
+      if (!nombre || !mancia) {
+        document.body.innerHTML = "<h2>Error: No se recibieron datos. Vuelve a la página anterior e inténtalo de nuevo.</h2>";
+        return;
       }
 
-      lista.innerHTML = datos.map(item => `<li>${item.label} <span>${item.value}</span></li>`).join('');
-    }
-
-    function construirMensaje() {
-      const nombre = d('nom');
-      const mancia = d('man');
-      const apellido = d('ape');
-      if (nombre === 'No proporcionado' || mancia === 'No proporcionado') return "Hola Sergio, quiero coordinar mi lectura pendiente.";
-
       const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
       const nombreMes = meses[parseInt(d('mes')) - 1] || '';
-      const despedida = d('sexo') === 'M' ? 'Estoy listo para coordinar, gracias.' : 'Estoy lista para coordinar, gracias.';
+      
+      // Mostrar lista en pantalla
+      const lista = document.getElementById('preview-list');
+      lista.innerHTML = `
+        <li>Nombre: <span>${nombre} ${apellido}</span></li>
+        <li>Nacimiento: <span>${d('dia')} de ${nombreMes} de ${d('anio')}</span></li>
+        <li>Numerología: <span>${d('num')}</span></li>
+        <li>Servicio: <span>${mancia}</span></li>
+      `;
 
-      let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\n\n`;
+      // Construir mensaje de WhatsApp igual al original
+      const despedida = d('sexo') === 'H' ? 'Estoy listo para coordinar mi lectura, gracias.' : 'Estoy lista para coordinar mi lectura, gracias.';
+      let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n`;
       msg += `*Datos personales*\n_${nombre} ${apellido}_\n`;
       msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
       msg += `Mi numerología es ${d('num')}\n`;
-      if (params.get('zod')) msg += `Signo: ${d('zod')}\n`;
+      if (d('zod')) msg += `Soy del signo ${d('zod')}\n`;
       msg += `\n*Datomancia*\n${mancia}\n`;
-      if (params.get('ext')) msg += `2x1 con: ${d('ext')}\n`;
-      msg += `Duración: ${d('min')} min\n`;
+      if (d('ext')) msg += `2x1 con: ${d('ext')}\n`;
+      msg += `Duración de la lectura: ${d('min')} minutos\n`;
       
       if (mancia.includes('Astrología') || d('ext').includes('Astrología')) {
-        msg += `\n*Datos Astrales*\nLugar: ${d('ciu')}, ${d('pai')}\nHora: ${d('hor')}\n`;
+        msg += `\n*Datos de Astrología*\nLugar: ${d('ciu')}, ${d('pro')}, ${d('pai')}\nHora: ${d('hor')}\n`;
       }
-      
       msg += `\n${despedida}`;
-      return msg;
-    }
 
-    function iniciar() {
-      mostrarVistaPrevia();
-      const texto = construirMensaje();
-      const phone = "59894140917";
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const finalUrl = isMobile 
-        ? `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`
-        : `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
-      
-      document.getElementById('waBtn').href = finalUrl;
+      const finalUrl = /Android|iPhone|iPad/i.test(navigator.userAgent)
+        ? `https://api.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(msg)}`
+        : `https://web.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(msg)}`;
 
-      // Auto-redirección opcional en 3 segundos para dar tiempo a ver la info
-      setTimeout(() => {
-        window.location.href = finalUrl;
-      }, 3500);
+      const btn = document.getElementById('waBtn');
+      btn.href = finalUrl;
+
+      // Redirección automática a los 3 segundos
+      setTimeout(() => { window.location.href = finalUrl; }, 3000);
     }
 
     window.onload = iniciar;
