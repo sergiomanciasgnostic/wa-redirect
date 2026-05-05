@@ -3,96 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic - Verificación</title>
+  <title>Verificación de Datos – Sergiomancias Gnostic</title>
   <style>
-    /* ... (Mantén tus estilos CSS anteriores aquí) ... */
+    :root {
+      --gold: #FF6A00;
+      --dark: #442565;
+      --dark-card: #3a1f57;
+      --text-muted: #d4b8f0;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #442565; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 850px; width: 100%; justify-content: center; }
-    .card { background: #3a1f57; border: 1px solid rgba(255,106,0,0.3); padding: 30px; flex: 1; min-width: 320px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
-    .info-panel { background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; text-align: left; width: 100%; }
-    .sigilo { width: 80px; margin-bottom: 15px; }
-    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 15px; }
-    h3 { font-size: 14px; color: #FF6A00; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid rgba(255,106,0,0.3); padding-bottom: 5px; }
-    .data-list { list-style: none; font-size: 14px; color: #d4b8f0; }
-    .data-list li { margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .data-list span { color: #fff; font-weight: 500; text-align: right; }
-    .btn-wa { display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; color: white; text-decoration: none; font-weight: bold; font-size: 17px; padding: 14px 28px; border-radius: 50px; margin-top: 20px; width: 100%; transition: 0.3s; }
-    .btn-wa:hover { background-color: #1ebe57; transform: translateY(-2px); }
+    body {
+      background: var(--dark); color: #fff; font-family: Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+    }
+    .container {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      max-width: 800px; width: 100%;
+    }
+    .card {
+      background: var(--dark-card); border: 1px solid rgba(255,106,0,0.3);
+      padding: 25px; flex: 1; min-width: 300px; border-radius: 12px;
+      text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    h3 {
+      color: var(--gold); font-size: 14px; text-transform: uppercase;
+      margin-bottom: 15px; border-bottom: 1px solid rgba(255,106,0,0.2);
+      padding-bottom: 5px; text-align: left;
+    }
+    .data-list { list-style: none; text-align: left; font-size: 14px; }
+    .data-list li {
+      margin-bottom: 10px; display: flex; justify-content: space-between;
+      color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 4px;
+    }
+    .data-list span { color: #fff; font-weight: bold; text-align: right; }
+    .btn-wa {
+      display: block; background: #25D366; color: #fff; text-decoration: none;
+      padding: 15px; border-radius: 50px; font-weight: bold; margin-top: 20px;
+      transition: 0.3s; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+    .btn-wa:hover { background: #1ebe57; transform: translateY(-2px); }
+    .logo { width: 70px; margin-bottom: 10px; }
+    #errorMsg { color: var(--gold); font-weight: bold; display: none; text-align: center; width: 100%; }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="card">
-      <h3>Verifica tus datos</h3>
-      <div class="info-panel">
-        <ul class="data-list" id="preview-list"></ul>
-      </div>
-    </div>
+<div id="errorMsg">
+    Error: No se recibieron datos. Vuelve a la página anterior e inténtalo de nuevo.
+</div>
 
-    <div class="card">
-      <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" />
-      <h2>¡Casi listo!</h2>
-      <p style="color:#d4b8f0; font-size:14px; margin-bottom:20px;">Redirigiendo a WhatsApp para coordinar...</p>
-      <a id="waBtn" class="btn-wa" href="#">Abrir WhatsApp</a>
-    </div>
+<div class="container" id="mainContent" style="display:none;">
+  <!-- Panel de Verificación -->
+  <div class="card">
+    <h3>Verificación de Datos</h3>
+    <ul class="data-list" id="previewList">
+        <!-- Se llena automáticamente -->
+    </ul>
   </div>
 
-  <script>
+  <!-- Panel de Redirección -->
+  <div class="card">
+    <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Logo">
+    <h2 style="color:var(--gold); margin-bottom:10px;">¡Pago Confirmado!</h2>
+    <p style="font-size:14px; color:var(--text-muted);">Estamos conectando con Sergiomancias Gnostic...</p>
+    <a id="waBtn" class="btn-wa" href="#">Enviar a WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  window.onload = function() {
     const params = new URLSearchParams(window.location.search);
-    const d = (key) => decodeURIComponent(params.get(key) || '').replace(/\+/g, ' ').trim();
+    
+    // Extraemos el mensaje completo que generó tu código original
+    const mensajeWA = params.get('msj');
 
-    function iniciar() {
-      const nombre = d('nom');
-      const apellido = d('ape');
-      const mancia = d('man');
+    if (mensajeWA) {
+      document.getElementById('mainContent').style.display = 'flex';
       
-      if (!nombre || !mancia) {
-        document.body.innerHTML = "<h2>Error: No se recibieron datos. Vuelve a la página anterior e inténtalo de nuevo.</h2>";
-        return;
-      }
-
-      const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-      const nombreMes = meses[parseInt(d('mes')) - 1] || '';
+      // Decodificamos el mensaje para extraer los datos de la lista visual
+      const textoLimpio = decodeURIComponent(mensajeWA);
       
-      // Mostrar lista en pantalla
-      const lista = document.getElementById('preview-list');
-      lista.innerHTML = `
-        <li>Nombre: <span>${nombre} ${apellido}</span></li>
-        <li>Nacimiento: <span>${d('dia')} de ${nombreMes} de ${d('anio')}</span></li>
-        <li>Numerología: <span>${d('num')}</span></li>
-        <li>Servicio: <span>${mancia}</span></li>
-      `;
+      // Función para extraer valores entre líneas para la vista previa
+      const extraer = (regex) => {
+        const match = textoLimpio.match(regex);
+        return match ? match[1].replace(/_/g, '').trim() : null;
+      };
 
-      // Construir mensaje de WhatsApp igual al original
-      const despedida = d('sexo') === 'H' ? 'Estoy listo para coordinar mi lectura, gracias.' : 'Estoy lista para coordinar mi lectura, gracias.';
-      let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\nAquí están mis datos:\n\n`;
-      msg += `*Datos personales*\n_${nombre} ${apellido}_\n`;
-      msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
-      msg += `Mi numerología es ${d('num')}\n`;
-      if (d('zod')) msg += `Soy del signo ${d('zod')}\n`;
-      msg += `\n*Datomancia*\n${mancia}\n`;
-      if (d('ext')) msg += `2x1 con: ${d('ext')}\n`;
-      msg += `Duración de la lectura: ${d('min')} minutos\n`;
-      
-      if (mancia.includes('Astrología') || d('ext').includes('Astrología')) {
-        msg += `\n*Datos de Astrología*\nLugar: ${d('ciu')}, ${d('pro')}, ${d('pai')}\nHora: ${d('hor')}\n`;
-      }
-      msg += `\n${despedida}`;
+      // Llenamos la lista de verificación extrayendo del mensaje original[cite: 4]
+      const previewList = document.getElementById('previewList');
+      const datos = [
+        { label: "Cliente", value: extraer(/\*Datos personales\*\n(.*?)\n/) },
+        { label: "Nacimiento", value: extraer(/Nací el (.*?)\n/) },
+        { label: "Numerología", value: extraer(/Mi numerología es (.*?)\n/) },
+        { label: "Servicio", value: extraer(/\*Datomancia\*\n(.*?)\n/) },
+        { label: "Duración", value: extraer(/Duración de la lectura: (.*?)\n/) }
+      ];
 
-      const finalUrl = /Android|iPhone|iPad/i.test(navigator.userAgent)
-        ? `https://api.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(msg)}`
-        : `https://web.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(msg)}`;
+      previewList.innerHTML = datos
+        .filter(d => d.value)
+        .map(d => `<li>${d.label}: <span>${d.value}</span></li>`)
+        .join('');
 
-      const btn = document.getElementById('waBtn');
-      btn.href = finalUrl;
+      // Configuramos el enlace final de WhatsApp
+      const phone = "59894140917";
+      const waUrl = /Android|iPhone|iPad/i.test(navigator.userAgent)
+        ? `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(textoLimpio)}`
+        : `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(textoLimpio)}`;
 
-      // Redirección automática a los 3 segundos
-      setTimeout(() => { window.location.href = finalUrl; }, 3000);
+      document.getElementById('waBtn').href = waUrl;
+
+      // Redirección automática en 3 segundos para que vean la lista
+      setTimeout(() => { window.location.href = waUrl; }, 3000);
+
+    } else {
+      document.getElementById('errorMsg').style.display = 'block';
     }
-
-    window.onload = iniciar;
-  </script>
+  };
+</script>
 </body>
 </html>
