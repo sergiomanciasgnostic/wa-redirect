@@ -3,76 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verificación de Datos – Sergiomancias Gnostic</title>
+  <title>Verificación – Sergiomancias Gnostic</title>
   <style>
     :root { --gold: #FF6A00; --dark: #442565; --dark-card: #3a1f57; --text-muted: #d4b8f0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--dark); color: #fff; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
     .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 800px; width: 100%; }
-    .card { background: var(--dark-card); border: 1px solid rgba(255,106,0,0.3); padding: 25px; flex: 1; min-width: 300px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    .card { background: var(--dark-card); border: 1px solid rgba(255,106,0,0.3); padding: 25px; flex: 1; min-width: 300px; border-radius: 12px; text-align: center; }
     h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(255,106,0,0.2); padding-bottom: 5px; text-align: left; }
     .data-list { list-style: none; text-align: left; font-size: 14px; }
     .data-list li { margin-bottom: 10px; display: flex; justify-content: space-between; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; }
-    .data-list span { color: #fff; font-weight: bold; }
+    .data-list span { color: #fff; font-weight: bold; text-align: right; margin-left: 10px; }
     .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 15px; border-radius: 50px; font-weight: bold; margin-top: 20px; transition: 0.3s; }
-    .btn-wa:hover { background: #1ebe57; transform: translateY(-2px); }
     .logo { width: 70px; margin-bottom: 10px; }
-    #errorMsg { color: var(--gold); font-weight: bold; display: none; text-align: center; width: 100%; }
   </style>
 </head>
 <body>
 
-<div id="errorMsg">
-    Error: No se encontraron datos en el sistema. Vuelve a la página anterior.
+<div id="errorMsg" style="display:none; text-align:center;">
+    <h2 style="color:var(--gold);">Error de Datos</h2>
+    <p>No pudimos recuperar tu información. Por favor, vuelve a completar el formulario.</p>
+    <a href="javascript:history.back()" style="color:#fff; text-decoration:underline; margin-top:20px; display:block;">Volver atrás</a>
 </div>
 
 <div class="container" id="mainContent" style="display:none;">
   <div class="card">
-    <h3>Resumen de tu Consulta</h3>
+    <h3>Lista de Verificación</h3>
     <ul class="data-list" id="previewList"></ul>
   </div>
 
   <div class="card">
     <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png">
-    <h2 style="color:var(--gold); margin-bottom:10px;">¡Casi Listo!</h2>
-    <p style="font-size:14px; color:var(--text-muted);">Redirigiendo a WhatsApp para conectar con Sergio...</p>
-    <a id="waBtn" class="btn-wa" href="#">Abrir WhatsApp</a>
+    <h2 style="color:var(--gold); margin-bottom:10px;">¡Datos Verificados!</h2>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">Redirigiendo a WhatsApp para coordinar tu lectura...</p>
+    <a id="waBtn" class="btn-wa" href="#">Abrir WhatsApp Ahora</a>
   </div>
 </div>
 
 <script>
   window.onload = function() {
-    // 1. INTENTAR OBTENER EL MENSAJE DEL LOCALSTORAGE
-    // Asegúrate de que en la página anterior guardes el mensaje con la clave 'mensajeWA'
-    const mensajeWA = localStorage.getItem('mensajeWA');
+    // Buscamos la info en el almacenamiento local
+    const mensajeFinal = localStorage.getItem('mensajeWhatsApp');
 
-    if (mensajeWA) {
+    if (mensajeFinal) {
       document.getElementById('mainContent').style.display = 'flex';
       
-      // 2. MOSTRAR VISTA PREVIA (Extrayendo datos del mensaje que ya armaste)[cite: 4]
-      const previewList = document.getElementById('previewList');
+      // Función para extraer datos del texto para la lista visual
       const extraer = (regex) => {
-        const match = mensajeWA.match(regex);
-        return match ? match[1].replace(/_/g, '').trim() : "No especificado";
+        const match = mensajeFinal.match(regex);
+        return match ? match[1].replace(/_/g, '').trim() : "---";
       };
 
-      // Estos campos buscan las etiquetas que tú pusiste en tu mensaje[cite: 4]
-      const datosHtml = `
-        <li>Cliente: <span>${extraer(/\*Datos personales\*\n(.*?)\n/)}</span></li>
+      const lista = document.getElementById('previewList');
+      lista.innerHTML = `
+        <li>Nombre: <span>${extraer(/\*Datos personales\*\n(.*?)\n/)}</span></li>
         <li>Nacimiento: <span>${extraer(/Nací el (.*?)\n/)}</span></li>
-        <li>Numerología: <span>${extraer(/Mi numerología es (.*?)\n/)}</span></li>
-        <li>Servicio: <span>${extraer(/\*Datomancia\*\n(.*?)\n/)}</span></li>
+        <li>Mancia: <span>${extraer(/\*Datomancia\*\n(.*?)\n/)}</span></li>
+        <li>Duración: <span>${extraer(/Duración de la lectura: (.*?)\n/)}</span></li>
       `;
-      previewList.innerHTML = datosHtml;
 
-      // 3. CONFIGURAR WHATSAPP
       const phone = "59894140917";
-      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(mensajeWA)}`;
+      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(mensajeFinal)}`;
       document.getElementById('waBtn').href = waUrl;
 
-      // Redirección automática después de 3 segundos
+      // Auto-redirección en 3 segundos
       setTimeout(() => { window.location.href = waUrl; }, 3000);
-
     } else {
       document.getElementById('errorMsg').style.display = 'block';
     }
