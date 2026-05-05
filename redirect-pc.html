@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abriendo WhatsApp...</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #442565; color: #fff; font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; text-align: center; padding: 24px;
+    }
+    .card {
+      background: #3a1f57; border: 1px solid rgba(255,106,0,0.35);
+      padding: 40px 32px; max-width: 340px; width: 100%;
+      border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .sigilo {
+      width: 90px; height: 90px; object-fit: contain; margin: 0 auto 20px; display: block;
+    }
+    h2 { font-size: 22px; color: #FF6A00; margin-bottom: 8px; }
+    p { color: #d4b8f0; font-size: 15px; margin-bottom: 16px; line-height: 1.4; }
+    .separador { border-top: 1px solid rgba(255,106,0,0.35); margin: 20px 0; }
+    .btn-wrap {
+      display: flex; align-items: center; gap: 12px; margin-top: 10px;
+    }
+    .wa-icon { width: 42px; height: 42px; flex-shrink: 0; }
+    .btn {
+      display: flex; align-items: center; justify-content: center;
+      flex: 1; padding: 14px 10px;
+      background: #25D366; color: #fff; font-size: 15px;
+      font-weight: bold; text-decoration: none;
+      border-radius: 8px; cursor: pointer; letter-spacing: 0.05em;
+      transition: background 0.3s;
+    }
+    .btn:hover { background: #1ebe57; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img class="sigilo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png" alt="Sergiomancias Gnostic" />
+
+    <h2>¡Todo listo!</h2>
+    <p>Prepárate para tu lectura con <br><strong style="color:#fff">Sergiomancias Gnostic</strong>.</p>
+
+    <div class="separador"></div>
+
+    <p>Hacé clic en el botón para abrir WhatsApp Web con tu mensaje listo.</p>
+
+    <div class="btn-wrap">
+      <svg class="wa-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="24" fill="#25D366"/>
+        <path fill="#fff" d="M34.5 13.5A14.9 14.9 0 0 0 24 9C15.7 9 9 15.7 9 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2A14.9 12.4 0 0 0 24 39c8.3 0 15-6.7 15-15 0-4-1.6-7.8-4.5-10.5zm-10.5 23a12.4 12.4 0 0 1-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5A12.4 12.4 0 0 1 11.6 24c0-6.8 5.6-12.4 12.4-12.4 3.3 0 6.4 1.3 8.8 3.6a12.3 12.3 0 0 1 3.6 8.8c0 6.9-5.5 12.5-12.4 12.5zm6.8-9.3c-.4-.2-2.2-1.1-2.6-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.5-.2.3-.5.3-.9.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.7-.6-.6-.9-.7h-.7c-.3 0-.7.1-1 .4-.4.4-1.4 1.4-1.4 3.3s1.4 3.8 1.6 4.1c.2.3 2.8 4.2 6.7 5.9 4 1.7 4 1.1 4.7 1 .7-.1 2.2-.9 2.5-1.7.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5z"/>
+      </svg>
+      <a id="waBtn" class="btn" href="https://api.whatsapp.com/send?phone=59894140917" target="_blank">Ir a WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get('msg');
+    const phone = '59894140917';
+    const waBtn = document.getElementById('waBtn');
+
+    if (msg) {
+      // Decodificamos y reparamos los saltos de línea
+      let textoLimpio = decodeURIComponent(msg).replace(/\\n/g, '\n');
+
+      // Construimos la URL y la asignamos al botón
+      // SIN redirección automática — el usuario hace clic (PC no lo bloquea así)
+      const finalUrl = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + encodeURIComponent(textoLimpio);
+      waBtn.href = finalUrl;
+    }
+  </script>
+
+</body>
+</html>
