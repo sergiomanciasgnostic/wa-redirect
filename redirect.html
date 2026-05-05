@@ -42,7 +42,7 @@
     <h2>Conexión Lista</h2>
     <p>Estamos preparando tu consulta profesional con <strong>Sergiomancias Gnostic</strong>.</p>
     <div class="separador"></div>
-    <p>Presiona el botón para abrir WhatsApp Web:</p>
+    <p>Presiona el botón para abrir WhatsApp:</p>
     
     <a id="waBtn" class="btn-wa" href="#" target="_blank">
       <svg class="wa-svg" viewBox="0 0 24 24">
@@ -56,23 +56,26 @@
     function construirMensaje() {
       const params = new URLSearchParams(window.location.search);
       
-      // Función mejorada: Prioriza URL, ignora localStorage vacío
+      // Función para obtener parámetros de la URL de forma segura
       const d = (key) => {
-        return params.get(key) ? decodeURIComponent(params.get(key)).replace(/\+/g, ' ').trim() : '';
+        const val = params.get(key);
+        return val ? decodeURIComponent(val).replace(/\+/g, ' ').trim() : '';
       };
 
-      const nombre = d('nom'); // Usamos nombres cortos para la URL
+      const nombre = d('nom');
       const mancia = d('man');
       const apellido = d('ape');
 
+      // Si faltan datos críticos, mensaje genérico
       if (!nombre || !mancia) {
         return "Hola Sergio, quiero coordinar mi lectura pendiente.";
       }
 
       const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
       const nombreMes = meses[parseInt(d('mes')) - 1] || '';
-      const despedida = d('sexo') === 'M' ? 'Estoy lista para coordinar, gracias.' : 'Estoy listo para coordinar, gracias.';
+      const despedida = d('sexo') === 'M' ? 'Estoy listo para coordinar, gracias.' : 'Estoy lista para coordinar, gracias.';
 
+      // Construcción del mensaje con formato WhatsApp
       let msg = `Hola, Sergiomancias Gnostic.\n¡Pago confirmado!\n\n`;
       msg += `*Datos personales*\n_${nombre} ${apellido}_\n`;
       msg += `Nací el ${d('dia')} de ${nombreMes} de ${d('anio')}\n`;
@@ -83,8 +86,8 @@
       if (d('ext')) msg += `2x1 con: ${d('ext')}\n`;
       msg += `Duración: ${d('min')} min\n`;
       
-      // Detectar Astrología en principal o extra
-      if (mancia === 'Astrología' || d('ext') === 'Astrología') {
+      // Si incluye Astrología, añadir datos específicos
+      if (mancia.includes('Astrología') || d('ext').includes('Astrología')) {
         msg += `\n*Datos Astrales*\nLugar: ${d('ciu')}, ${d('pai')}\nHora: ${d('hor')}\n`;
       }
       
@@ -94,20 +97,27 @@
 
     function iniciar() {
       const texto = construirMensaje();
-      // Forzamos web.whatsapp.com para PC
-      const urlPC = `https://web.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(texto)}`;
-      const urlMovil = `https://api.whatsapp.com/send?phone=59894140917&text=${encodeURIComponent(texto)}`;
+      const phone = "59894140917";
       
-      const finalUrl = /Android|iPhone/i.test(navigator.userAgent) ? urlMovil : urlPC;
+      // Detección de dispositivo
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       
-      document.getElementById('waBtn').href = finalUrl;
+      // Construir la URL según el dispositivo
+      // En PC forzamos web.whatsapp.com para evitar que pida aplicación de escritorio
+      const finalUrl = isMobile 
+        ? `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`
+        : `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
+      
+      const btn = document.getElementById('waBtn');
+      btn.href = finalUrl;
 
-      // Auto-redirección opcional (a veces bloqueada en PC, por eso el botón es clave)
+      // Redirección automática después de un breve delay
       setTimeout(() => {
         window.location.href = finalUrl;
       }, 1500);
     }
 
+    // Ejecutar cuando la página esté lista
     window.onload = iniciar;
   </script>
 </body>
