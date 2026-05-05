@@ -1,68 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmación – Sergiomancias Gnostic</title>
-  <style>
-    :root { --gold: #FF6A00; --dark: #442565; --card: #3a1f57; --text: #d4b8f0; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--dark); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .container { max-width: 500px; width: 100%; }
-    .card { background: var(--card); border: 1px solid rgba(255,106,0,0.3); padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid rgba(255,106,0,0.2); padding-bottom: 5px; text-align: left; }
-    .data-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; text-align: left; font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 20px; white-space: pre-wrap; }
-    .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 16px; border-radius: 50px; font-weight: bold; transition: 0.3s; font-size: 18px; }
-    .btn-wa:hover { background: #1ebe57; transform: scale(1.03); }
-    .logo { width: 80px; margin-bottom: 15px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación – Sergiomancias Gnostic</title>
+    <style>
+        :root { --gold: #FF6A00; --dark: #442565; --card: #3a1f57; --text: #d4b8f0; }
+        body { 
+            background: var(--dark); 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        .card { 
+            background: var(--card); 
+            border: 1px solid var(--gold); 
+            padding: 30px; 
+            border-radius: 15px; 
+            text-align: center; 
+            max-width: 450px; 
+            width: 90%; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .info-box { 
+            background: rgba(0,0,0,0.3); 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: left; 
+            margin: 20px 0; 
+            font-size: 14px; 
+            white-space: pre-wrap; 
+            border-left: 3px solid var(--gold); 
+            color: var(--text);
+            line-height: 1.5;
+        }
+        .btn-wa { 
+            display: none; 
+            background: #25D366; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 16px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 18px; 
+            transition: 0.3s;
+        }
+        .btn-wa:hover { background: #1ebe57; transform: scale(1.05); }
+        .logo { width: 80px; margin-bottom: 15px; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="card" id="cardContent">
+  <div class="card">
     <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png">
-    <h3>Información Recuperada</h3>
+    <h2 style="color:var(--gold); margin-top:0;">INFORMACIÓN RECUPERADA</h2>
     
-    <div class="data-box" id="infoBox">Cargando datos...</div>
-
-    <a id="waLink" class="btn-wa" href="#">Enviar a WhatsApp</a>
-    <p style="margin-top:15px; font-size:12px; color:var(--text);" id="status">Redirigiendo automáticamente en 3s...</p>
+    <div id="info" class="info-box">Buscando datos del formulario...</div>
+    
+    <!-- Este botón solo llevará a WhatsApp al hacer clic -->
+    <a id="btnWA" class="btn-wa" href="#">ENVIAR A WHATSAPP</a>
+    
+    <p id="status" style="font-size: 12px; margin-top: 15px; color: var(--text);">
+        Verifica que los datos sean correctos antes de enviar.
+    </p>
   </div>
-</div>
 
 <script>
   window.onload = function() {
+    // 1. Intentamos obtener los datos de la URL (msj)
     const params = new URLSearchParams(window.location.search);
-    const mensajeRaw = params.get('msj');
+    const msjURL = params.get('msj');
 
-    if (mensajeRaw) {
-      const mensajeFinal = decodeURIComponent(mensajeRaw);
+    // 2. Intentamos obtener los datos del localStorage como respaldo
+    const msjLocal = localStorage.getItem('mensajeWhatsApp');
+
+    // Usamos el que esté disponible
+    const mensajeFinal = msjURL ? decodeURIComponent(msjURL) : msjLocal;
+
+    if (mensajeFinal) {
+      // Mostramos el texto en el cuadro
+      document.getElementById('info').innerText = mensajeFinal;
       
-      // Mostramos el mensaje recuperado en el cuadro de texto
-      document.getElementById('infoBox').innerText = mensajeFinal;
-
-      // Configuramos el botón de WhatsApp
-      const phone = "59894140917";
-      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(mensajeFinal)}`;
-      document.getElementById('waLink').href = waUrl;
-
-      // Redirección automática
-      setTimeout(() => {
-        window.location.href = waUrl;
-      }, 3000);
-
+      // Configuramos el botón y lo mostramos
+      const btn = document.getElementById('btnWA');
+      btn.style.display = 'block';
+      btn.href = "https://wa.me/59894140917?text=" + encodeURIComponent(mensajeFinal);
+      
+      document.getElementById('status').innerText = "Listo para enviar.";
     } else {
-      // Si falla la URL, intentamos con el último recurso (localStorage)
-      const respaldo = localStorage.getItem('mensajeWhatsApp');
-      if (respaldo) {
-          document.getElementById('infoBox').innerText = respaldo;
-          document.getElementById('waLink').href = `https://wa.me/59894140917?text=${encodeURIComponent(respaldo)}`;
-      } else {
-          document.getElementById('infoBox').innerHTML = "<span style='color:red;'>⚠️ No se detectaron datos.</span><br>Por favor, regresa al formulario y asegúrate de completar todos los campos.";
-          document.getElementById('waLink').style.display = 'none';
-          document.getElementById('status').innerText = "Esperando acción del usuario...";
-      }
+      document.getElementById('info').innerHTML = "<span style='color:#ff4444;'>⚠️ No se detectaron datos.<br>Vuelve al formulario e intenta nuevamente.</span>";
+      document.getElementById('status').innerText = "Error de comunicación.";
     }
   };
 </script>
