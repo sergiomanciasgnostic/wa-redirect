@@ -1,74 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sergiomancias Gnostic - Redirección</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación – Sergiomancias Gnostic</title>
   <style>
     :root { --gold: #FF6A00; --dark: #442565; --card: #3a1f57; --text: #d4b8f0; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--dark); color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 800px; width: 100%; }
-    .card { background: var(--card); border: 1px solid rgba(255,106,0,0.3); padding: 30px; flex: 1; min-width: 300px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid rgba(255,106,0,0.2); padding-bottom: 5px; text-align: left; }
-    .data-list { list-style: none; text-align: left; font-size: 15px; }
-    .data-list li { margin-bottom: 12px; display: flex; justify-content: space-between; color: var(--text); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
-    .data-list span { color: #fff; font-weight: bold; }
-    .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 16px; border-radius: 50px; font-weight: bold; margin-top: 25px; transition: 0.3s; font-size: 18px; }
+    body { background: var(--dark); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+    .container { max-width: 500px; width: 100%; }
+    .card { background: var(--card); border: 1px solid rgba(255,106,0,0.3); padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    h3 { color: var(--gold); font-size: 14px; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid rgba(255,106,0,0.2); padding-bottom: 5px; text-align: left; }
+    .data-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; text-align: left; font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 20px; white-space: pre-wrap; }
+    .btn-wa { display: block; background: #25D366; color: #fff; text-decoration: none; padding: 16px; border-radius: 50px; font-weight: bold; transition: 0.3s; font-size: 18px; }
     .btn-wa:hover { background: #1ebe57; transform: scale(1.03); }
     .logo { width: 80px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
 
-<div class="container" id="main" style="display:none;">
-  <div class="card">
-    <h3>Confirma tu información</h3>
-    <ul class="data-list" id="preview"></ul>
-  </div>
-
-  <div class="card">
+<div class="container">
+  <div class="card" id="cardContent">
     <img class="logo" src="https://static.wixstatic.com/media/4c70c8_89b322a9983548539f2997a6cec3cf3b~mv2.png">
-    <h2 style="color:var(--gold); margin-bottom:10px;">¡Datos Listos!</h2>
-    <p style="color:var(--text); font-size:14px;">Redirigiendo a WhatsApp en 3 segundos...</p>
-    <a id="linkWA" class="btn-wa" href="#">Enviar a WhatsApp</a>
-  </div>
-</div>
+    <h3>Información Recuperada</h3>
+    
+    <div class="data-box" id="infoBox">Cargando datos...</div>
 
-<div id="error" style="display:none; text-align:center;">
-    <h2 style="color:var(--gold);">Error de Datos</h2>
-    <p>No recibimos información del formulario.</p>
-    <a href="https://sergiomanciasgnostic.com" style="color:#fff; display:block; margin-top:20px;">Volver al inicio</a>
+    <a id="waLink" class="btn-wa" href="#">Enviar a WhatsApp</a>
+    <p style="margin-top:15px; font-size:12px; color:var(--text);" id="status">Redirigiendo automáticamente en 3s...</p>
+  </div>
 </div>
 
 <script>
   window.onload = function() {
     const params = new URLSearchParams(window.location.search);
-    const rawData = params.get('data');
+    const mensajeRaw = params.get('msj');
 
-    if (rawData) {
-      document.getElementById('main').style.display = 'flex';
-      const msg = decodeURIComponent(rawData);
+    if (mensajeRaw) {
+      const mensajeFinal = decodeURIComponent(mensajeRaw);
       
-      const extraer = (reg) => {
-        const m = msg.match(reg);
-        return m ? m[1].replace(/_/g, '').trim() : "No indicado";
-      };
+      // Mostramos el mensaje recuperado en el cuadro de texto
+      document.getElementById('infoBox').innerText = mensajeFinal;
 
-      // Mostramos la lista con tus datos reales
-      document.getElementById('preview').innerHTML = `
-        <li>Nombre: <span>${extraer(/\*Datos personales\*\n(.*?)\n/)}</span></li>
-        <li>Nacimiento: <span>${extraer(/Nací el (.*?)\n/)}</span></li>
-        <li>Servicio: <span>${extraer(/\*Datomancia\*\n(.*?)\n/)}</span></li>
-        <li>Lectura: <span>${extraer(/Duración de la lectura: (.*?)\n/)}</span></li>
-      `;
+      // Configuramos el botón de WhatsApp
+      const phone = "59894140917";
+      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(mensajeFinal)}`;
+      document.getElementById('waLink').href = waUrl;
 
-      const finalUrl = `https://wa.me/59894140917?text=${encodeURIComponent(msg)}`;
-      document.getElementById('linkWA').href = finalUrl;
+      // Redirección automática
+      setTimeout(() => {
+        window.location.href = waUrl;
+      }, 3000);
 
-      setTimeout(() => { window.location.href = finalUrl; }, 3000);
     } else {
-      document.getElementById('error').style.display = 'block';
+      // Si falla la URL, intentamos con el último recurso (localStorage)
+      const respaldo = localStorage.getItem('mensajeWhatsApp');
+      if (respaldo) {
+          document.getElementById('infoBox').innerText = respaldo;
+          document.getElementById('waLink').href = `https://wa.me/59894140917?text=${encodeURIComponent(respaldo)}`;
+      } else {
+          document.getElementById('infoBox').innerHTML = "<span style='color:red;'>⚠️ No se detectaron datos.</span><br>Por favor, regresa al formulario y asegúrate de completar todos los campos.";
+          document.getElementById('waLink').style.display = 'none';
+          document.getElementById('status').innerText = "Esperando acción del usuario...";
+      }
     }
   };
 </script>
