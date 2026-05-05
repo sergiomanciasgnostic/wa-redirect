@@ -2,81 +2,47 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmación de Lectura – Sergiomancias Gnostic</title>
+    <title>Confirmación Sergiomancias Gnostic</title>
     <style>
-        :root {
-            --gold: #FF6A00;
-            --dark: #442565;
-        }
         body { 
-            background: var(--dark); 
-            color: white; 
-            font-family: Arial, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0;
-            text-align: center;
+            background: #442565; color: white; font-family: Arial, sans-serif; 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; height: 100vh; margin: 0; text-align: center;
         }
-        .card {
-            background: #3a1f57;
-            padding: 30px;
-            border: 1px solid rgba(255,106,0,0.3);
-            border-radius: 12px;
-            max-width: 400px;
+        .boton-web {
+            background: #25D366; color: white; padding: 20px 40px;
+            text-decoration: none; font-weight: bold; border-radius: 10px;
+            font-size: 20px; border: none; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .btn-whatsapp {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 30px;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 50px;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-        .btn-whatsapp:hover {
-            background: #128C7E;
-            transform: scale(1.05);
-        }
+        .boton-web:hover { background: #128C7E; transform: scale(1.05); }
+        p { margin-bottom: 30px; font-size: 18px; opacity: 0.9; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2 style="color: var(--gold);">¡Datos Recibidos!</h2>
-        <p>Para abrir WhatsApp Web y coordinar tu sesión con Sergio, presiona el botón de abajo:</p>
-        
-        <a id="finalBtn" class="btn-whatsapp" href="#">ABRIR WHATSAPP WEB</a>
-    </div>
+    <h2>¡Información Lista!</h2>
+    <p>Haz clic abajo para abrir WhatsApp Web y coordinar con Sergio.</p>
+    
+    <a id="btnFinal" class="boton-web" href="#">ABRIR WHATSAPP EN ESTA PC</a>
 
     <script>
-        // 1. EXTRAER DATOS DE LA URL (Esto sobrevive al cambio de dominio)
-        const params = new URLSearchParams(window.location.search);
-        
-        const nombre = params.get('nom') || 'Cliente';
-        const mancia = params.get('man') || 'Lectura';
-        const numero = params.get('num') || '';
+        // LEER LOS DATOS DESDE LA URL (Única forma que funciona en PC)
+        const query = new URLSearchParams(window.location.search);
+        const nombre = query.get('nom') || 'Cliente';
+        const mancia = query.get('man') || 'Lectura';
+        const num = query.get('num') || '';
 
-        // 2. CONSTRUIR EL MENSAJE
-        let texto = `Hola Sergio, soy ${nombre}.\nHe confirmado mi pago para mi lectura de ${mancia}.\n`;
-        if(numero) texto += `Mi numerología es: ${numero}.\n`;
-        texto += `Estoy listo para coordinar por aquí.`;
+        // CONSTRUIR EL MENSAJE
+        let msg = `Hola Sergio, soy ${nombre}. He confirmado mi pago para mi lectura de ${mancia}.`;
+        if(num) msg += ` Mi numerología es ${num}.`;
+        msg += ` Quedo atento para coordinar.`;
 
-        const mensajeFinal = encodeURIComponent(texto);
-        
-        // 3. ASIGNAR AL BOTÓN (Forzamos WhatsApp Web para PC)
-        const btn = document.getElementById('finalBtn');
-        btn.href = `https://web.whatsapp.com/send?phone=59894140917&text=${mensajeFinal}`;
+        // EL ENLACE DE WHATSAPP WEB (Forzado para navegador)
+        const urlFinal = "https://web.whatsapp.com/send?phone=59894140917&text=" + encodeURIComponent(msg);
 
-        // 4. AUTO-REDIRECCIÓN (Como respaldo, si el PC lo permite)
-        setTimeout(() => {
-            window.location.href = btn.href;
-        }, 2000);
+        // PONER EL ENLACE EN EL BOTÓN
+        document.getElementById('btnFinal').href = urlFinal;
     </script>
 </body>
 </html>
