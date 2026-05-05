@@ -2,47 +2,168 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmación Sergiomancias Gnostic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación – Sergiomancias Gnostic</title>
     <style>
-        body { 
-            background: #442565; color: white; font-family: Arial, sans-serif; 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; height: 100vh; margin: 0; text-align: center;
+        :root {
+            --gold: #FF6A00;
+            --gold-light: #ff8c3a;
+            --dark: #442565;
+            --dark-card: #3a1f57;
+            --text: #ffffff;
         }
-        .boton-web {
-            background: #25D366; color: white; padding: 20px 40px;
-            text-decoration: none; font-weight: bold; border-radius: 10px;
-            font-size: 20px; border: none; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+        body {
+            background: var(--dark);
+            color: var(--text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
-        .boton-web:hover { background: #128C7E; transform: scale(1.05); }
-        p { margin-bottom: 30px; font-size: 18px; opacity: 0.9; }
+
+        .card {
+            background: var(--dark-card);
+            border: 1px solid rgba(255, 106, 0, 0.3);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-container {
+            margin-bottom: 25px;
+        }
+
+        .logo-container img {
+            width: 120px;
+            filter: drop-shadow(0 0 10px rgba(255, 106, 0, 0.5));
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .phrase {
+            font-style: italic;
+            color: #d4b8f0;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 15px 35px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-whatsapp:hover {
+            color: var(--dark);
+            box-shadow: 0 0 20px rgba(255, 106, 0, 0.4);
+        }
+
+        .btn-whatsapp::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--gold);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-whatsapp:hover::before {
+            left: 0;
+        }
+
+        .footer-note {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
     </style>
 </head>
 <body>
 
-    <h2>¡Información Lista!</h2>
-    <p>Haz clic abajo para abrir WhatsApp Web y coordinar con Sergio.</p>
-    
-    <a id="btnFinal" class="boton-web" href="#">ABRIR WHATSAPP EN ESTA PC</a>
+    <div class="card">
+        <div class="logo-container">
+            <!-- Tu logo oficial -->
+            <img src="https://static.wixstatic.com/media/0bac9e_eaa3ed8c842143aca95b9d666cc52250~mv2.png" alt="Logo Sergiomancias">
+        </div>
+
+        <h1>CONEXIÓN ESTABLECIDA</h1>
+        <p class="phrase" id="fraseDinamica">"El universo ha escuchado tu llamado, ahora es momento de interpretar sus señales."</p>
+        
+        <a id="btnFinal" class="btn-whatsapp" href="#" target="_blank">
+            Coordinar mi Lectura
+        </a>
+
+        <div class="footer-note">
+            Se abrirá WhatsApp Web en una ventana nueva para tu seguridad.
+        </div>
+    </div>
 
     <script>
-        // LEER LOS DATOS DESDE LA URL (Única forma que funciona en PC)
+        // 1. CAPTURA DE DATOS DESDE LA URL (RETENCIÓN)
         const query = new URLSearchParams(window.location.search);
-        const nombre = query.get('nom') || 'Cliente';
+        
+        const nombre = query.get('nom') || 'Consultante';
         const mancia = query.get('man') || 'Lectura';
-        const num = query.get('num') || '';
+        const extra  = query.get('ext') || '';
+        const numero = query.get('num') || '';
+        const tiempo = query.get('min') || '';
 
-        // CONSTRUIR EL MENSAJE
-        let msg = `Hola Sergio, soy ${nombre}. He confirmado mi pago para mi lectura de ${mancia}.`;
-        if(num) msg += ` Mi numerología es ${num}.`;
-        msg += ` Quedo atento para coordinar.`;
+        // 2. PERSONALIZACIÓN DE LA FRASE (Opcional según la mancia)
+        const fraseEl = document.getElementById('fraseDinamica');
+        if (mancia.includes("Tarot")) {
+            fraseEl.innerText = `"Las cartas han sido elegidas, ${nombre}. Tu destino aguarda."`;
+        } else if (mancia.includes("Astrología")) {
+            fraseEl.innerText = `"Los astros se alinean para ti, ${nombre}. Descubre tu mapa estelar."`;
+        }
 
-        // EL ENLACE DE WHATSAPP WEB (Forzado para navegador)
+        // 3. CONSTRUCCIÓN DEL MENSAJE PROFESIONAL
+        let msg = `Hola Sergio, mi nombre es ${nombre}.\n`;
+        msg += `He confirmado mi pago para una sesión de: *${mancia}${extra ? ' + ' + extra : ''}*.\n`;
+        if (numero) msg += `Mi número de vida es el ${numero}.\n`;
+        if (tiempo) msg += `Duración contratada: ${tiempo} minutos.\n`;
+        msg += `\nQuedo a la espera para coordinar el encuentro.`;
+
+        // 4. CONFIGURACIÓN DEL BOTÓN PARA PC (Ventana nueva)
         const urlFinal = "https://web.whatsapp.com/send?phone=59894140917&text=" + encodeURIComponent(msg);
+        
+        const btn = document.getElementById('btnFinal');
+        btn.href = urlFinal;
 
-        // PONER EL ENLACE EN EL BOTÓN
-        document.getElementById('btnFinal').href = urlFinal;
+        // Si es móvil, usamos el protocolo api.whatsapp para mayor rapidez
+        if (/Android|iPhone/i.test(navigator.userAgent)) {
+            btn.href = "https://api.whatsapp.com/send?phone=59894140917&text=" + encodeURIComponent(msg);
+        }
     </script>
 </body>
 </html>
