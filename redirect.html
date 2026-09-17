@@ -110,7 +110,7 @@
 
     function prepararEnlace() {
       const texto = construirMensaje();
-      const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
+      const urlFinal = `https://wa.me/${phone}?text=${encodeURIComponent(texto)}`;
       document.getElementById('waBtn').href = urlFinal;
     }
 
