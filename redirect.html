@@ -54,7 +54,7 @@
     
     <div class="separador"></div>
     
-    <p>Si no eres redirigido automáticamente:</p>
+    <p>Hacé click en el botón para continuar por WhatsApp:</p>
     
     <!-- Botón con Logo Integrado -->
     <a id="waBtn" class="btn-wa" href="#">
@@ -108,21 +108,16 @@
       return msg;
     }
 
-    function iniciarRedireccion() {
+    function prepararEnlace() {
       const texto = construirMensaje();
       const urlFinal = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(texto)}`;
-      
       document.getElementById('waBtn').href = urlFinal;
-
-      // Pequeña espera para asegurar que el diseño cargue antes de saltar a WhatsApp
-      setTimeout(() => {
-        window.location.href = urlFinal;
-      }, 1200);
     }
 
-    window.onload = iniciarRedireccion;
+    // Solo preparamos el link al cargar. NO redirigimos automáticamente:
+    // la redirección forzada sin click es lo que gatilla el bloqueo en PC/laptop.
+    window.onload = prepararEnlace;
   </script>
 
 </body>
 </html>
- 
